@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.leien.dao.UserDao">
+    <resultMap id="userMap" type="com.leien.entity.User">
+        <result column="id" property="userId" />
+        <result column="username" property="userName" />
+        <result column="password" property="passWord" />
+        <result column="role_name" property="roleName" />
+        <result column="phone" property="phone" />
+        <result column="create_time" property="createTime" />
+        <result column="role_id" property="roleId" />
+    </resultMap>
+    <select id="queryUserByPhone" resultMap="userMap" parameterType="String">
+        SELECT u.id,u.password,u.username,u.phone,u.create_time,ur.role_id,r.role_name
+        FROM user u
+                 LEFT JOIN user_role ur
+                           ON u.id = ur.user_id
+                 LEFT JOIN role r
+                           ON ur.role_id = r.id
+        WHERE u.phone = ${phone}
+    </select>
+    <!-- 查询用户详情 -->
+    <select id="queryUserById" resultMap="userMap" parameterType="Integer">
+        select u.id,u.username,u.phone,u.create_time,ur.role_id,r.role_name
+        FROM user u
+                 LEFT JOIN user_role ur
+                           ON u.id = ur.user_id
+                 LEFT JOIN role r
+                           ON ur.role_id = r.id
+        WHERE u.id = #{userId}
+    </select>
+
+    <!-- 分页查询所有用户 -->
+    <select id="queryAllUser" resultMap="userMap" parameterType="com.leien.entity.User">
+        SELECT u.id,u.username,u.phone,u.create_time,ur.role_id,r.role_name
+        FROM user u
+                 LEFT JOIN user_role ur
+                           ON u.id = ur.user_id
+                 LEFT JOIN role r
+                           ON ur.role_id = r.id
+        WHERE 1=1
+        ORDER BY u.id
+        LIMIT #{page},#{size}
+    </select>
+
+    <!-- 查询用户总条数 -->
+    <select id="count" resultType="long">
+        SELECT COUNT(*) FROM user
+    </select>
+
+    <!-- 修改用户登录密码 -->
+    <update id="updateLoginPwdByUserId">
+        UPDATE `user` SET  password = #{userPwd} WHERE id = #{userId}
+    </update>
+
+    <!-- 保存新添加用户信息 -->
+    <insert id="saveUser" parameterType="com.leien.entity.User" >
+        INSERT INTO `user` (username, password,phone) VALUES (#{userName},#{passWord},#{phone})
+    </insert>
+
+    <!-- 更新用户信息 -->
+    <update id="updateUserByUserId" parameterType="com.leien.entity.User">
+        UPDATE `user`
+        <set>
+            <if test="userName != null">
+                username = #{userName},
+            </if>
+            <if test="passWord != null">
+                password = #{passWord},
+            </if>
+            <if test="phone != null">
+                phone = #{phone},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime}
+            </if>
+        </set>
+        WHERE id = #{userId}
+    </update>
+
+    <!-- 根据用户ID删除用户 -->
+    <delete id="deleteUserByUserId" parameterType="java.util.List">
+        DELETE FROM  `user` WHERE id IN
+        <foreach collection="list" item="userId" open="(" separator="," close=")">
+            #{userId}
+        </foreach>
+    </delete>
+
+</mapper>
