@@ -14,8 +14,10 @@ import java.util.List;
  * @Date: 2019/9/24 13:55
  * @Description:设备控制处理类
  */
+
 @RestController
 public class DeviceController {
+
     @Autowired
     private DeviceService deviceService;
 
