@@ -23,4 +23,13 @@ public class User extends BaseEntity{
     private Integer roleId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone="GMT+8")
     private Date createTime;
+    /**
+     * 用户所属学校id
+     */
+    private Integer schoolId;
+    /**
+     * 用户所属学校名称
+     */
+    private Integer schoolName;
+
 }
