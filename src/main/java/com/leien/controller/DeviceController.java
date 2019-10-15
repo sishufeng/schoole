@@ -2,7 +2,7 @@ package com.leien.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.leien.applicationRunner.AppRunner;
+import com.leien.applicationrunner.AppRunner;
 import com.leien.entity.Device;
 import com.leien.service.DeviceService;
 import com.leien.utils.APIUtil;

@@ -35,8 +35,17 @@ public interface UserService {
      * 添加用户
      * @return
      */
-    Map<String,Object> saveUser(User user);
-
+    Map<String,Object> saveUser(User user,String userName,String phone);
+    /**
+     * 用户名查重
+     * @return
+     */
+    String jianchaUserName(String userName);
+    /**
+     * 手机号查重
+     * @return
+     */
+    Integer jianchaPhone(String phone);
     /**
      * 根据用户Id修改用户
      * @return
@@ -66,5 +75,6 @@ public interface UserService {
      * @return
      */
     long count();
+    final  int liulei=10;
 
 }

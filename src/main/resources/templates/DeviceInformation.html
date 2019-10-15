@@ -5,14 +5,15 @@
 <meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="../static/css/index.css" />
-<link rel="stylesheet" href="//res.layui.com/layui/dist/css/layui.css"  media="all">
+<link rel="stylesheet" type="text/css" href="../static/css/DeviceInformation.css" />
+<link rel="stylesheet" href="../static/layui/css/layui.css">
+<!-- <link rel="stylesheet" href="//res.layui.com/layui/dist/css/layui.css"  media="all"> -->
 <title>login</title>
 <script type="text/javascript">
 </script>
 </head>
 <body>
-<nav class="navbar">
+<!-- <nav class="navbar">
 	<div class="daohang">
 		<a href="">用户管理</a>
 		<div class="gaikuang">
@@ -26,7 +27,7 @@
 
 	</div>
 </header>
-</nav>
+</nav> -->
 <section class="hero">
 	<div class="left">
 
@@ -165,25 +166,20 @@
 	});
 
 </script>
-
-
 <script type="text/javascript">
 	// 设置定时器
-	var t1 = window.setInterval(repeat,3000);
+	// var t1 = window.setInterval(repeat,3000); 
 	function repeat(){
-		$.post('/device/getDeviceData',{"uuid":"8622d15dff814"},function (res) {
+		$.post('/iotApi/getReceiveMsg',{"uuid":"8622d15dff814"},function (res) {
 		// 开始解析
 			var msg=res.msg;
-			// console.log(msg);
-            if (res.msg.code == 1) {
-				/*if(msg.substr(7,4)=="0008"){
+            if (res.code == 1) {
+				if(msg.substr(7,4)=="0008"){
 					document.getElementById("zhuangtai").innerHTML="开着";
 					console.log("测试");
-				}*/
-                console.log("测试成功");
-            }else {
-                console.log("测试失败");
-			}
+				}
+				
+            }
         })
 	}
 	//去掉定时器的方法 

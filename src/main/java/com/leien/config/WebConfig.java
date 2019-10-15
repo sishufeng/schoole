@@ -8,6 +8,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.util.ArrayList;
@@ -55,5 +56,11 @@ public class WebConfig implements WebMvcConfigurer {
 //                .excludePathPatterns(Arrays.asList("/**","/static/**"));
                 .excludePathPatterns(Arrays.asList("/login","/user/login","/static/**"));
 
+    }
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        registry
+                .addResourceHandler("/static/**")
+                .addResourceLocations("classpath:/static/");
     }
 }
