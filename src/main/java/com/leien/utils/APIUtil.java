@@ -1,10 +1,7 @@
 package com.leien.utils;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.leien.config.ApiConfig;
 import org.apache.http.*;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -15,18 +12,15 @@ import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.Resource;
 import java.io.*;
 import java.util.*;
 
 /**
  * @Compny:LeiEnChuanMei
- * @Auther: SSF
+ * @Author: SSF
  * @Date: 2019/9/28 16:02
  * @Description:连接远程接口工具类
  */
@@ -35,22 +29,32 @@ public class APIUtil {
 
     private static ApiConfig api;
 
+    /**
+     * 注入访问远程设备配置类
+     * @param apiConfig
+     */
     @Autowired
     public void init(ApiConfig apiConfig) {
-        this.api = apiConfig;
+        APIUtil.api = apiConfig;
     }
 
     private Logger logger = LoggerFactory.getLogger(APIUtil.class);
 
+    /**
+     * 访问远程设备接口获取设备信息
+     * @param token
+     * @return
+     */
     public String getData(String token){
         String str = "";
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
-        String url =  api.getDataUrl() + api.getDataPathName();//http://192.168.1.101:8881/iotApi/getReceiveMsgAll
+        String url =  api.getUrl() + api.getDataPathName();
         //封装请求参数
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("project_key", api.getTokenKey()));
-        if (StringUtils.isEmpty(token)){//如果Token为空就重新获取
+        //如果Token为空就重新获取
+        if (StringUtils.isEmpty(token)){
             token = getToken();
         }
         try {
@@ -65,14 +69,15 @@ public class APIUtil {
             if (state == HttpStatus.SC_OK){
                 HttpEntity entity = response.getEntity();
                 String resultData = EntityUtils.toString(entity, Consts.UTF_8);
-                logger.info(resultData);
                 return resultData;
-            }else if (state == HttpStatus.SC_REQUEST_TIMEOUT){//408验证过期
+                //408验证过期
+            }else if (state == HttpStatus.SC_REQUEST_TIMEOUT){
                 logger.error("验证过期");
                 //token过期，重新获取
                 token = getToken();
                 get.setHeader("access-token",token);
-            }else if(state == 401){//401没有权限
+                //401没有权限
+            }else if(state == 401){
                 logger.info("没有权限");
             }
         } catch (IOException e) {
@@ -98,12 +103,16 @@ public class APIUtil {
         return null;
     }
 
+    /**
+     * 获取token
+     * @return
+     */
     public String getToken(){
         String str = "";
         String jsonString = null;
         CloseableHttpResponse response = null;
         CloseableHttpClient httpClient = HttpClients.createDefault();
-        String url = api.getTokenUrl() + api.getTokenPathName();//http://192.168.1.101:8881/auth/token_sign;
+        String url = api.getUrl() + api.getTokenPathName();
         //封装请求参数
         List<NameValuePair> params = new ArrayList();
         params.add(new BasicNameValuePair("token_key", api.getTokenKey()));
@@ -111,7 +120,6 @@ public class APIUtil {
         try {
             //转换为键值对
             str = EntityUtils.toString(new UrlEncodedFormEntity(params, Consts.UTF_8));
-            System.out.println(str);
             //创建Get请求
             HttpGet httpGet = new HttpGet(url+"?"+str);
             //执行Get请求，

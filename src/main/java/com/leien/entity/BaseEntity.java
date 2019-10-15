@@ -4,7 +4,7 @@ import com.alibaba.fastjson.annotation.JSONField;
 
 /**
  * @Compny:LeiEnChuanMei
- * @Auther: SSF
+ * @Author: SSF
  * @Date: 2019/9/25 15:31
  * @Description:
  */

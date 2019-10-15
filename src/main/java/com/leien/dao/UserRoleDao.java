@@ -6,7 +6,7 @@ import java.util.List;
 
 /**
  * @Compny:LeiEnChuanMei
- * @Auther: SSF
+ * @Author: SSF
  * @Date: 2019/9/26 13:46
  * @Description:用户权限映射类
  */

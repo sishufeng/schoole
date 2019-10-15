@@ -8,25 +8,37 @@ import java.util.List;
 
 /**
  * @Compny:LeiEnChuanMei
- * @Auther: SSF
+ * @Author: SSF
  * @Date: 2019/9/25 15:33
  * @Description:分页实体类
  */
 public class PageEntity<T> implements Serializable {
     private static final long serialVersionUID = 1L;
-    //当前页
+    /**
+     * 当前页
+     */
     private int currentPage;
-    //每页的数量
+    /**
+     * 每页的数量
+     */
     private int pageSize;
-    //总记录数
+    /**
+     * 总记录数
+     */
     private long total;
     //总页数
     private int pages;
-    //结果集
+    /**
+     * 结果集
+     */
     private List<T> list;
-    //是否为第一页
+    /**
+     * 是否为第一页
+     */
     private boolean isFirstPage = false;
-    //是否为最后一页
+    /**
+     * 是否为最后一页
+     */
     private boolean isLastPage = false;
 
     public PageEntity() {

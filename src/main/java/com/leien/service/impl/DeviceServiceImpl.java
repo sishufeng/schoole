@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @Compny:LeiEnChuanMei
- * @Auther: SSF
+ * @Author: SSF
  * @Date: 2019/9/24 12:18
  * @Description:设备业务实现类
  */
