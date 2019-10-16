@@ -1,0 +1,32 @@
+{
+  "groups": [
+    {
+      "name": "api",
+      "type": "com.leien.config.ApiConfig",
+      "sourceType": "com.leien.config.ApiConfig"
+    }
+  ],
+  "properties": [
+    {
+      "name": "api.data-path-name",
+      "type": "java.lang.String",
+      "sourceType": "com.leien.config.ApiConfig"
+    },
+    {
+      "name": "api.token-key",
+      "type": "java.lang.String",
+      "sourceType": "com.leien.config.ApiConfig"
+    },
+    {
+      "name": "api.token-path-name",
+      "type": "java.lang.String",
+      "sourceType": "com.leien.config.ApiConfig"
+    },
+    {
+      "name": "api.url",
+      "type": "java.lang.String",
+      "sourceType": "com.leien.config.ApiConfig"
+    }
+  ],
+  "hints": []
+}
