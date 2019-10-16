@@ -33,17 +33,11 @@ public class UserController {
     public Map<String,Object> queryList(User user) {//ResponseEntity
         Map<String,Object> map = new HashMap<>();
         List<User> userEntities = userService.queryAllUser(user);
-        /*PageEntity<User> userPageEntity = new PageEntity<>(userEntities);
-        userPageEntity.setTotal(userService.count());
-        //前台请求需要
-        userPageEntity.setCode(0);
-        userPageEntity.setMsg("成功");*/
         map.put("code","0");
         map.put("msg","");
         map.put("data",userEntities);
         map.put("count",userService.count());
-
-        return map;//new ResponseEntity(userPageEntity , HttpStatus.OK)
+        return map;
     }
 
     /**
