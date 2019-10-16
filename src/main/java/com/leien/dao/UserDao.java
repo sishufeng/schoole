@@ -42,7 +42,17 @@ public interface UserDao {
      * @return
      */
     Integer saveUser(User user);
-
+    /**
+     * 新增用户查重
+     * @return
+     */
+    String jianCha(String userName);
+    /**
+     * 新增手机号查重
+     * @param phone
+     * @return
+     */
+    Integer jianchaPhone(String phone);
     /**
      * 分页查询所有用户
      * @return

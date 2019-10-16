@@ -20,6 +20,7 @@ import java.util.Map;
 @Service
 public class UserServiceImpl implements UserService {
 
+
     @Resource
     private UserDao userDao;
 
@@ -65,21 +66,50 @@ public class UserServiceImpl implements UserService {
      * @return
      */
     @Override
-    public Map<String,Object> saveUser(User user) {
+    public Map<String,Object> saveUser(User user,String userName,String phone) {
         Map<String,Object> map = new HashMap<>();
-        Integer num = userDao.saveUser(user);
-        if (num > 0){
-            map.put("msg","添加成功");
-            //添加成功再查询该用户信息，获取用户ID
-            User user1 = userDao.queryUserByPhone(user.getPhone());
-            //把用户ID和权限ID保存到用户权限关联表中
-            userRoleDao.addUserRole(user.getRoleId(),user1.getUserId());
+        String inspect=this.jianchaUserName(userName);
+        Integer ph =this.jianchaPhone(phone);
+        if(inspect==null||inspect.equals("")){
+            if(ph>0){
+                map.put("msg","手机号重复");
+            }else {
+                Integer num = userDao.saveUser(user);
+                if (num > 0){
+                    map.put("msg","添加成功");
+                    //添加成功再查询该用户信息，获取用户ID
+                    User user1 = userDao.queryUserByPhone(user.getPhone());
+                    //把用户ID和权限ID保存到用户权限关联表中
+                    userRoleDao.addUserRole(user.getRoleId(),user1.getUserId());
+                }else {
+                    map.put("msg","添加失败");
+                }
+            }
         }else {
-            map.put("msg","添加失败");
+            map.put("msg","用户名重复");
         }
         return map;
     }
+    /**
+     * 查看添加的用户名是否重复
+     * @param userName
+     * @return
+     */
+    @Override
+    public String jianchaUserName(String userName){
+        return userDao.jianCha(userName);
+    }
+    /**
+     * 查看添加的用户名是否重复
+     * @param phone
+     * @return
+     */
 
+    @Override
+    public Integer jianchaPhone(String phone){
+
+        return userDao.jianchaPhone(phone);
+    }
     /**
      * 根据用户Id修改用户信息
      * @param user

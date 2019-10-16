@@ -26,24 +26,31 @@ public class UserController {
 
     /**
      * 分页查询所有用户
-      * @return
+     * @return
      */
     @CrossOrigin
     @GetMapping("/queryList")
-    public Map<String,Object> queryList(User user) {
+    public Map<String,Object> queryList(User user) {//ResponseEntity
         Map<String,Object> map = new HashMap<>();
         List<User> userEntities = userService.queryAllUser(user);
+        /*PageEntity<User> userPageEntity = new PageEntity<>(userEntities);
+        userPageEntity.setTotal(userService.count());
+        //前台请求需要
+        userPageEntity.setCode(0);
+        userPageEntity.setMsg("成功");*/
         map.put("code","0");
         map.put("msg","");
         map.put("data",userEntities);
         map.put("count",userService.count());
-        return map;
+
+        return map;//new ResponseEntity(userPageEntity , HttpStatus.OK)
     }
 
     /**
      * 查看用户详情
      * @return
      */
+    @CrossOrigin
     @GetMapping("/details")
     public User queryUserDetails(Integer userId) {
         User user = userService.queryUserById(userId);
@@ -53,6 +60,7 @@ public class UserController {
     /**
      * 跳转到登陆页
      */
+    @CrossOrigin
     @PostMapping("/login")
     public Map<String,Object> login(String phone, String password, HttpSession session) {
         Map<String,Object> map = new HashMap<>();
@@ -70,6 +78,7 @@ public class UserController {
      * 修改用户登录密码
      * @return
      */
+    @CrossOrigin
     @PostMapping("/updatePwd")
     public Map<String,Object> editUserLoginPwd(String userPwd,HttpSession session){
         User user = (User) session.getAttribute("user");
@@ -82,19 +91,20 @@ public class UserController {
      * @param user
      * @return
      */
+    @CrossOrigin
     @PostMapping("/add")
-    public Map<String,Object> saveUser(User user){
+    public Map<String,Object> saveUser(User user, String userName,String phone){
         //新用户密码默认为 123456
         user.setPassWord("123456");
-        Map<String, Object> map = userService.saveUser(user);
+        Map<String, Object> map = userService.saveUser(user,userName,phone);
         return map;
     }
-
     /**
      * 修改用户详情
      * @param user
      * @return
      */
+    @CrossOrigin
     @PostMapping("/saveEditUser")
     public Map<String,Object> updateUserDetails(User user){
         Map<String, Object> map = userService.updateUserDetailsByUserId(user);
@@ -106,14 +116,28 @@ public class UserController {
      * @param userId
      * @return
      */
+    @CrossOrigin
     @PostMapping("/deleteUser")
     public Map<String,Object> deleteUserByUSerId(String userId){
         List userIdList = new ArrayList();
         String[] userIds = userId.split(",");
         for (int i = 0; i < userIds.length; i++){
-                userIdList.add(userIds[i]);
+            userIdList.add(userIds[i]);
         }
         Map<String, Object> resultMap = userService.deleteUserByUserId(userIdList);
         return resultMap;
+    }
+    /**
+     * 退出
+     * @param session
+     * @return
+     */
+    @CrossOrigin
+    @PostMapping("/exit")
+    public Map<String, Object> exit(HttpSession session){
+        session.removeAttribute("user");
+        Map<String,Object> map=new HashMap<>();
+        map.put("msg","成功");
+        return map;
     }
 }

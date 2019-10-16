@@ -71,12 +71,13 @@
         }
 
         $.post('/user/login',{"phone":phone,"password":pwd},function (res) {
+            console.log(pwd);
             if(res.data != null){
-                if (pwd != res.data.password){
-                    alert("密码错误");
+                if (pwd != res.data.passWord){
+                    console.log(res.data.passWord);
                     return false;
                 }
-                window.location.href="/main";
+                window.location.href="/index";
             }else {
                 alert(res.nouser);
                 window.location.href="/login";

@@ -30,6 +30,6 @@ public class User extends BaseEntity{
     /**
      * 用户所属学校名称
      */
-    private Integer schoolName;
+    private String schoolName;
 
 }

@@ -54,7 +54,19 @@
     <select id="count" resultType="long">
         SELECT COUNT(*) FROM user
     </select>
-
+    <!--检查保存用户是否重复-->
+    <select id="jianCha" resultType="String" parameterType="com.leien.entity.User">
+        select username from user where username=#{userName}
+    </select>
+    <!--检查手机号是否重复-->
+    <select id="jianchaPhone" resultType="Integer" parameterType="com.leien.entity.User">
+        SELECT
+            count(phone)
+        FROM
+            USER u
+        WHERE
+	    phone = #{phone}
+    </select>
     <!-- 修改用户登录密码 -->
     <update id="updateLoginPwdByUserId">
         UPDATE `user` SET  password = #{userPwd} WHERE id = #{userId}
@@ -67,10 +79,13 @@
 
     <!-- 更新用户信息 -->
     <update id="updateUserByUserId" parameterType="com.leien.entity.User">
-        UPDATE `user`
+        UPDATE `user` u, `user_role` ur
         <set>
             <if test="userName != null">
                 username = #{userName},
+            </if>
+            <if test="roleId != null">
+                role_id = #{roleId},
             </if>
             <if test="passWord != null">
                 password = #{passWord},
@@ -82,7 +97,7 @@
                 create_time = #{createTime}
             </if>
         </set>
-        WHERE id = #{userId}
+        WHERE u.id =#{userId} and ur.user_id=#{userId}
     </update>
 
     <!-- 根据用户ID删除用户 -->
