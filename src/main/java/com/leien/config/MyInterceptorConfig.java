@@ -33,9 +33,6 @@ public class MyInterceptorConfig implements HandlerInterceptor {
             return true;
         }else {
             //未登陆，返回登陆页面
-//            response.setCharacterEncoding("utf-8");
-//            response.sendError(403,"没有权限");
-//            request.setAttribute("msg","没有权限请先登陆");
             //获取转发器，转发请求到视图映射器，登录页面
             request.getRequestDispatcher("/login").forward(request,response);
             return false;
