@@ -13,15 +13,16 @@ import java.util.Date;
  */
 @Data
 public class Device {
-    private Integer id;
+    private String id;
     /**
      * 设备类型ID
      */
     private Integer deviceTypeId;
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+
     /**
      * 设备创建时间
      */
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     private Date createTime;
     /**
      * 设备名称
