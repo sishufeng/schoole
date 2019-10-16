@@ -45,7 +45,7 @@ public class AppRunner implements ApplicationRunner {
                     String returnData = apiUtil.getData(token);
                     pageList.add(returnData);
                     count++;
-                    if (count == 20){//1分钟往数据库保存一次
+                    if (count == 60){//3分钟往数据库保存一次
                         dataList.add(returnData);
                         System.out.println(">>>>>>>>>>>>++++++++>>>>>>"+returnData);
                         count = 0;
