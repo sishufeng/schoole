@@ -9,31 +9,25 @@
         <result column="phone" property="phone" />
         <result column="create_time" property="createTime" />
         <result column="role_id" property="roleId" />
-        <result column="school_id" property="schoolId" />
-        <result column="schoolName" property="schoolName" jdbcType="VARCHAR"/>
     </resultMap>
     <select id="queryUserByPhone" resultMap="userMap" parameterType="String">
         SELECT u.id,u.password,u.username,u.phone,u.create_time,ur.role_id,
-               r.role_name,s.school_type,s.school_name as schoolName
+               r.role_name
             FROM user u
                      LEFT JOIN user_role ur
                                ON u.id = ur.user_id
                      LEFT JOIN role r
                                ON ur.role_id = r.id
-                     LEFT JOIN school s
-                               ON s.id = u.school_id
             WHERE u.phone = ${phone}
     </select>
     <!-- 查询用户详情 -->
     <select id="queryUserById" resultMap="userMap" parameterType="Integer">
-        select u.id,u.username,u.phone,u.create_time,ur.role_id,r.role_name,s.school_name as schoolName
+        select u.id,u.username,u.phone,u.create_time,ur.role_id,r.role_name
         FROM user u
                  LEFT JOIN user_role ur
                            ON u.id = ur.user_id
                  LEFT JOIN role r
                            ON ur.role_id = r.id
-                 LEFT JOIN school s
-                           ON s.id = u.school_id
         WHERE u.id = #{userId}
     </select>
 
@@ -74,7 +68,7 @@
 
     <!-- 保存新添加用户信息 -->
     <insert id="saveUser" parameterType="com.leien.entity.User" >
-        INSERT INTO `user` (username, password,phone,school_id) VALUES (#{userName},#{passWord},#{phone},#{schoolId})
+        INSERT INTO `user` (username, password,phone) VALUES (#{userName},#{passWord},#{phone})
     </insert>
 
     <!-- 更新用户信息 -->
