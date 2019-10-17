@@ -10,6 +10,13 @@
     {
       "name": "api.data-path-name",
       "type": "java.lang.String",
+      "description": "访问设备返回数据访问名",
+      "sourceType": "com.leien.config.ApiConfig"
+    },
+    {
+      "name": "api.device-information-path-name",
+      "type": "java.lang.String",
+      "description": "设备信息访问路径",
       "sourceType": "com.leien.config.ApiConfig"
     },
     {
