@@ -63,6 +63,14 @@ public class MainController {
     public String EChartsZhe() {
         return "EChartsZhe";
     }
+    @GetMapping("/schooleOne")
+    public String schooleOne() {
+        return "schooleOne";
+    }
+    @GetMapping("/schooleSecond")
+    public String schooleSecond() {
+        return "schooleSecond";
+    }
     /**
      * 跳转到主页
      * @return
