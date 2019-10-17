@@ -22,8 +22,7 @@ import java.util.*;
  * @Description:设备控制处理类
  */
 
-//@RestController
-    @Controller
+@RestController
 @RequestMapping("/device")
 public class DeviceController {
 
@@ -46,7 +45,6 @@ public class DeviceController {
      * @return
      */
     @PostMapping("/getDeviceData")
-    @ResponseBody
     public Map<String,Object> getDeviceData(){
         List list = appRunner.pageList;
         Map<String,Object> map = new HashMap<>();
@@ -54,9 +52,4 @@ public class DeviceController {
         return map;
     }
 
-
-    @GetMapping("/go")
-    public String device(){
-        return "indexss";
-    }
 }
