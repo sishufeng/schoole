@@ -29,9 +29,35 @@ public class DeviceController {
     AppRunner appRunner;
 
     @GetMapping("/getDevice")
-    public List<Device> queryAllDevice(){
+    public Map<String,Object> queryAllDevice(){
+        Map<String,Object> map = new HashMap<>();
         List<Device> device = deviceService.findAll();
-        return device;
+        for(Device devicelist :device){
+            if(devicelist.getDeviceType().equals("0")){
+                devicelist.setDeviceType("温控器");
+            }
+            else {
+                devicelist.setDeviceType("风机");
+            }
+            if(devicelist.getDeviceStatus().equals("0")){
+                devicelist.setDeviceStatus("关");
+            }
+            else {
+                devicelist.setDeviceStatus("开");
+            }
+            if(devicelist.getValveStatus().equals("0")){
+                devicelist.setValveStatus("关");
+            }
+            else {
+                devicelist.setValveStatus("开");
+            }
+           System.out.println(map);
+        }
+//        int deviceStatus=device.get(deviceStatus);
+        map.put("code","0");
+        map.put("msg","");
+        map.put("data",device);
+        return map;
     }
 
 
