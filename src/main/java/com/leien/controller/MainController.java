@@ -71,6 +71,10 @@ public class MainController {
     public String schooleSecond() {
         return "schooleSecond";
     }
+    @GetMapping("/yidongindex")
+    public String yidongindex() {
+        return "yidongindex";
+    }
     /**
      * 跳转到主页
      * @return
