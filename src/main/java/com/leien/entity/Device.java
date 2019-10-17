@@ -20,17 +20,17 @@ public class Device {
     /**
      * 设备类型(0=温控器，1=风机)
      */
-    private Integer deviceType;
+    private String deviceType;
 
     /**
      * 阀门状态(0：关，1：开)
      */
-    private Integer valveStatus;
+    private String valveStatus;
 
     /**
      * 设备状态(0：关，1：开)
      */
-    private Integer deviceStatus;
+    private String deviceStatus;
 
     /**
      * 进水温度
