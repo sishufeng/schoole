@@ -40,6 +40,7 @@ public class DeviceController {
         return device;
     }
 
+
     /**
      * 获取设备信息
      * @return
