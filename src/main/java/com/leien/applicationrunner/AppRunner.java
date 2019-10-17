@@ -59,9 +59,11 @@ public class AppRunner implements ApplicationRunner {
                 String zhaungtai = object.getString("zhaungtai");
                 String uuid = object.getString("uuid");
                 String remarks = object.getString("remarks");
-                /*if (!StringUtils.isEmpty(name) && name.equals("风机")){
-                    device.setDeviceType();
-                }*/
+                if (!StringUtils.isEmpty(name) && name.equals("风机")){
+                    device.setDeviceType("0");
+                }else {
+                    device.setDeviceType("1");
+                }
                 device.setTypeName(typeName);
                 device.setDeviceName(name);
                 //设备状态(0：在线，1：不在线)

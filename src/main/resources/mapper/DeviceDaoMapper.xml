@@ -28,11 +28,6 @@
 
     <!-- 批量插入设备信息 -->
     <insert id="bulkInsertDevice" parameterType="com.leien.entity.Device">
-
-
-
-
-
         insert into device (id,device_name,remarks,uuid,type_name,zhaungtai)
         values
           <foreach collection="deviceList" separator="," item="device">
