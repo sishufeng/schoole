@@ -23,5 +23,12 @@ public class ApiConfig {
     private String url;
     private String tokenPathName;
     private String tokenKey;
+    /**
+     * 访问设备返回数据访问名
+     */
     private String dataPathName;
+    /**
+     * 设备信息访问路径
+     */
+    private String deviceInformationPathName;
 }

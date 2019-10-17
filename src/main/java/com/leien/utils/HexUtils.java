@@ -48,7 +48,7 @@ public class HexUtils {
     }
 
     public static void main(String[] args) {
-        String str = "33 03 0A 00 00 00 29 00 29 00 29 00 29 97 16 ";
+        String str = "33 03 16 00 00 00 13 00 0A 00 11 00 0D 00 27 00 00 00 29 00 29 00 29 00 29 D4 EC";
         Map<String,Object> map = new HashMap<>();
         byte[] bytes = toByteArray(str);
         Object[] data = getData(bytes);

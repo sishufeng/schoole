@@ -1,18 +1,12 @@
 package com.leien.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.leien.applicationrunner.AppRunner;
 import com.leien.entity.Device;
 import com.leien.service.DeviceService;
 import com.leien.utils.APIUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.ApplicationArguments;
-import org.springframework.stereotype.Controller;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import javax.annotation.PostConstruct;
 import java.util.*;
 
 /**

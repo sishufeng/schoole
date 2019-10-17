@@ -41,6 +41,60 @@ public class APIUtil {
     private Logger logger = LoggerFactory.getLogger(APIUtil.class);
 
     /**
+     * 获取设备信息
+     * @param token
+     * @return
+     */
+    public String getDeviceInformation(String token){
+        String str = "";
+        CloseableHttpClient httpClient = HttpClients.createDefault();
+        CloseableHttpResponse response = null;
+        String url =  api.getUrl() + api.getDeviceInformationPathName();
+        //封装请求参数
+        List<NameValuePair> params = new ArrayList();
+        params.add(new BasicNameValuePair("project_key", api.getTokenKey()));
+        //如果Token为空就重新获取
+        if (StringUtils.isEmpty(token)){
+            token = getToken();
+        }
+        try {
+            str = EntityUtils.toString(new UrlEncodedFormEntity(params, Consts.UTF_8));
+            HttpGet get = new HttpGet(url+"?"+str);
+            get.setHeader("access-token",token);
+            //执行请求
+            response = httpClient.execute(get);
+            StatusLine status = response.getStatusLine();
+            //获取状态码
+            int state = status.getStatusCode();
+            if (state == HttpStatus.SC_OK){
+                HttpEntity entity = response.getEntity();
+                String resultData = EntityUtils.toString(entity, Consts.UTF_8);
+                return resultData;
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally{
+            //消耗实体内容
+            if(response != null){
+                try {
+                    response.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            //关闭相应 丢弃http连接
+            if(httpClient != null){
+                try {
+                    httpClient.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
+    /**
      * 访问远程设备接口获取设备信息
      * @param token
      * @return
