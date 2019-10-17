@@ -20,17 +20,21 @@ public class Device {
     /**
      * 设备类型(0=温控器，1=风机)
      */
-    private String deviceType;
+    private Integer deviceType;
+    /**
+     * 设备类型名称
+     */
+    private String typeName;
 
     /**
      * 阀门状态(0：关，1：开)
      */
-    private String valveStatus;
+    private Integer valveStatus;
 
     /**
      * 设备状态(0：关，1：开)
      */
-    private String deviceStatus;
+    private Integer deviceStatus;
 
     /**
      * 进水温度
@@ -67,16 +71,20 @@ public class Device {
      *  设备名称
      */
     private String  deviceName;
+    /**
+     * 设备状态(0：在线，1：不在线)
+     */
+    private String zhaungtai;
 
     /**
      * 设备说明
      */
-    private String deviceRemark;
+    private String remarks;
 
     /**
      * 访问接口使用
      */
-    private String deviceUUID;
+    private String uuid;
 
     /**
      * 设备所属学校

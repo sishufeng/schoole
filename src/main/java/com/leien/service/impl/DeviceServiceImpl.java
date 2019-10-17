@@ -52,7 +52,6 @@ public class DeviceServiceImpl implements DeviceService {
     @Transactional
     public int bulkInsertDevice(List<Device> deviceList) {
         DefaultTransactionDefinition definition = new DefaultTransactionDefinition();
-        definition.setName("");
         definition.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
         TransactionStatus status = transactionManager.getTransaction(definition);
         try{

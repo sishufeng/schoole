@@ -15,8 +15,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @Compny:LeiEnChuanMei
@@ -40,12 +41,15 @@ public class APIUtil {
 
     private Logger logger = LoggerFactory.getLogger(APIUtil.class);
 
+
+
     /**
      * 获取设备信息
      * @param token
      * @return
      */
     public String getDeviceInformation(String token){
+
         String str = "";
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
@@ -68,7 +72,9 @@ public class APIUtil {
             int state = status.getStatusCode();
             if (state == HttpStatus.SC_OK){
                 HttpEntity entity = response.getEntity();
+
                 String resultData = EntityUtils.toString(entity, Consts.UTF_8);
+
                 return resultData;
             }
         } catch (IOException e) {

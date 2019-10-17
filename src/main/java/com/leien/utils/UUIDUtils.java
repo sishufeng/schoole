@@ -14,7 +14,7 @@ public class UUIDUtils {
      * 生成不带 - 的UUID 全部大写的字符串
      * @return
      */
-    public  String getUuid(){
+    public static String getUuid(){
         String uuid = UUID.randomUUID().toString().toUpperCase().replaceAll("-", "");
         return uuid;
     }

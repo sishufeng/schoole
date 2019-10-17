@@ -3,8 +3,8 @@
 <mapper namespace="com.leien.dao.DeviceDao" >
     <resultMap id="deviceMap" type="com.leien.entity.Device">
         <result column="id" property="id" jdbcType="VARCHAR"/>
-        <result column="device_type" property="deviceType" jdbcType="VARCHAR"/>
-        <result column="valve_status" property="valveStatus" jdbcType="VARCHAR"/>
+        <result column="device_type" property="deviceType" jdbcType="INTEGER"/>
+        <result column="valve_status" property="valveStatus" jdbcType="INTEGER"/>
         <result column="inlet_temperature" property="inletTemperature" />
         <result column="rewater_temperature" property="reWaterTemperature" />
         <result column="device_humidity" property="deviceHumidity" />
@@ -13,7 +13,7 @@
         <result column="create_time" property="createTime" jdbcType="DATE"/>
         <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
         <result column="device_remark" property="deviceRemark" jdbcType="VARCHAR"/>
-        <result column="device_status" property="deviceStatus" jdbcType="VARCHAR"/>
+        <result column="device_status" property="deviceStatus" jdbcType="INTEGER"/>
         <result column="device_uuid" property="deviceUUID" jdbcType="VARCHAR"/>
         <result column="affiliated_school" property="affiliatedSchool" jdbcType="VARCHAR"/>
     </resultMap>
@@ -31,13 +31,15 @@
 
     <!-- 批量插入设备信息 -->
     <insert id="bulkInsertDevice" parameterType="com.leien.entity.Device">
-        insert into device (id,device_type,valve_status,inlet_temperature,rewater_temperature,device_humidity,
-        beiyi_temperature,beier_temperature,device_name,device_remark,device_uuid,device_status,affiliated_school)
+
+
+
+
+
+        insert into device (id,device_name,remarks,uuid,type_name,zhaungtai)
         values
           <foreach collection="deviceList" separator="," item="device">
-              (#{device.id},#{device.deviceType},#{device.valveStatus},#{device.inletTemperature},#{device.reWaterTemperature},
-              #{device.deviceHumidity},#{device.beiYiTemperature},#{device.beiErTemperature},#{device.deviceName},
-               #{device.deviceRemark},#{device.deviceUUID},#{device.deviceStatus},#{device.affiliatedSchool}
+              (#{device.id},#{device.deviceName},#{device.remarks},#{device.uuid},#{device.typeName},#{device.zhaungtai}
         )
           </foreach>
     </insert>
