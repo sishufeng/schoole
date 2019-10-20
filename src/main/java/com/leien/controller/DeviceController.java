@@ -69,7 +69,9 @@ public class DeviceController {
     public Map<String,Object> getDeviceData(){
         List list = appRunner.pageList;
         Map<String,Object> map = new HashMap<>();
-        map.put("msg",list);
+        map.put("code","0");
+        map.put("msg","");
+        map.put("data",list);
         return map;
     }
 
