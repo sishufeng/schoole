@@ -13,10 +13,6 @@ public class DeviceReturnData {
 
     private String id;
     /**
-     * 设备ID
-     */
-    private String deviceId;
-    /**
      * 设备类型(0=温控器，1=风机)
      */
     private Integer deviceType;

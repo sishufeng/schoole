@@ -3,7 +3,7 @@
 <mapper namespace="com.leien.dao.DeviceReturnDataDao">
     <resultMap id="deviceReturnDataMap" type="com.leien.entity.DeviceReturnData">
         <result column="id" property="id" jdbcType="VARCHAR"/>
-        <result column="device_id" property="deviceId" jdbcType="VARCHAR"/>
+        <result column="device_uuid" property="deviceUuid" jdbcType="VARCHAR"/>
         <result column="device_type" property="deviceType" jdbcType="INTEGER"/>
         <result column="valve_status" property="valveStatus" jdbcType="INTEGER"/>
         <result column="inlet_temperature" property="inletTemperature" />
@@ -11,11 +11,10 @@
         <result column="beiyi_temperature" property="beiYiTemperature" />
         <result column="beier_temperature" property="beiErTemperature" />
         <result column="add_time" property="addTime" jdbcType="VARCHAR"/>
-        <result column="device_uuid" property="deviceUuid" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List" >
-        id,device_id,device_type,inlet_temperature,rewater_temperature,
+        id,device_type,inlet_temperature,rewater_temperature,
         beiyi_temperature,beier_temperature,valve_status,add_time,device_uuid,type_name
     </sql>
 <!--
@@ -23,10 +22,10 @@
 -->
     <insert id="insertDeviceReData" parameterType="com.leien.entity.DeviceReturnData">
         insert into device_return_data
-        (id,device_id,device_type,inlet_temperature,rewater_temperature,beiyi_temperature,
+        (id,device_type,inlet_temperature,rewater_temperature,beiyi_temperature,
          beier_temperature,valve_status,add_time,device_uuid,type_name)
         values
-        (#{id},#{deviceId},#{deviceType},#{inletTemperature},#{reWaterTemperature},
+        (#{id},#{deviceType},#{inletTemperature},#{reWaterTemperature},
          #{beiYiTemperature},#{beiErTemperature},#{valveStatus},#{addTime},
          #{deviceUuid},#{typeName})
 
@@ -38,16 +37,16 @@
         <include refid="Base_Column_List" />
         values
         <foreach collection="deviceList" separator="," item="device">
-            (#{device.id},#{device.deviceId},#{device.deviceType},#{device.inletTemperature},#{device.rewaterTemperature},
+            (#{device.id},#{device.deviceType},#{device.inletTemperature},#{device.rewaterTemperature},
             #{device.beiyiTemperature},#{device.beierTemperature},#{device.valveStatus},#{device.addTime},
             #{device.deviceUuid},#{device.typeName})
         </foreach>
     </insert>
     
     <insert id="insert" parameterType="com.leien.entity.DeviceReturnData">
-        insert into device_return_data (id,device_id,add_time,inlet_temperature,rewater_temperature,beiyi_temperature,beier_temperature,valve_status)
+        insert into device_return_data (id,add_time,inlet_temperature,rewater_temperature,beiyi_temperature,beier_temperature,valve_status)
 
-        values (#{id},#{deviceId},#{addTime},#{inletTemperature},#{reWaterTemperature},#{beiYiTemperature},#{beiErTemperature},#{valveStatus})
+        values (#{id},#{addTime},#{inletTemperature},#{reWaterTemperature},#{beiYiTemperature},#{beiErTemperature},#{valveStatus})
 
     </insert>
 

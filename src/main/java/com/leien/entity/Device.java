@@ -15,6 +15,11 @@ import java.util.Date;
 public class Device {
 
     /**
+     * 主键
+     */
+    private String uuid;
+
+    /**
      * 设备类型(0=温控器，1=风机)
      */
     private String deviceType;
@@ -77,11 +82,6 @@ public class Device {
      * 设备说明
      */
     private String remarks;
-
-    /**
-     * 访问接口使用
-     */
-    private String uuid;
 
     /**
      * 设备所属学校
