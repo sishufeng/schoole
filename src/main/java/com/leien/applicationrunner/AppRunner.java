@@ -39,7 +39,7 @@ public class AppRunner implements ApplicationRunner {
 
     DeviceReturnData returnData1 ;
     String token ;
-    public List pageList = new ArrayList();
+    public List pageList;
 //    int count = 0;
     @Autowired
     APIUtil apiUtil;
@@ -69,6 +69,7 @@ public class AppRunner implements ApplicationRunner {
         executorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
+                pageList = new ArrayList();
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 if (!StringUtils.isEmpty(token)) {
                     String returnData = apiUtil.getData(token);
@@ -86,29 +87,41 @@ public class AppRunner implements ApplicationRunner {
                             returnData1.setDeviceUuid(clientUuid);
                             //设备工作类型  0=温控器，1=风机
                             int deviceStatus = Integer.parseInt(s[4] + s[5],16);
-
-                            returnData1.setDeviceType(deviceStatus);
-                            // 设备阀门状态(1：开，0：关)
-                            returnData1.setValveStatus(Integer.parseInt(s[15] + s[16],16));
-                            //冷水温度
-                            returnData1.setInletTemperature(Long.parseLong(s[17] + s[18],16));
-                            // 内管温度
-                            returnData1.setReWaterTemperature(Long.parseLong(s[19] + s[20],16));
-                            // 外管温度
-                            returnData1.setBeiYiTemperature(Long.parseLong(s[21] + s[22],16));
-                            // 集热温度
-                            returnData1.setBeiErTemperature(Long.parseLong(s[23] + s[24],16));
-                            String addTime = format.format(jsonBeen.getAddTime());
-                            returnData1.setAddTime(addTime);
-
-                            pageList.add(returnData1);
-                            //根据 addTime,设备UUID 查询数据库是否已有该条数据
-                            DeviceReturnData deviceReData = deviceReService.queryDeviceDataByAddTime(addTime,clientUuid);
-                            String isRead = s[1];
-                            // 返回数据第三位代表操作类型，03：读取，06：操作。并且时间不同再往数据库保存
-                            if (isRead.equals("03") && deviceReData == null){
-                                deviceReService.insertDeviceReData(returnData1);
+                            if(deviceStatus == 0){
+                                returnData1.setTypeName("温控器");
+                            }else {
+                                returnData1.setTypeName("风机");
                             }
+                            // 温控解析
+//                            if(deviceStatus == 0){
+                                returnData1.setDeviceType(deviceStatus);
+                                // 设备阀门状态(1：开，0：关)
+                                int valveSta = Integer.parseInt(s[15] + s[16],16);
+                                if(valveSta == 0){
+                                }
+                                returnData1.setValveStatus(valveSta);
+                                //冷水温度
+                                returnData1.setInletTemperature(Long.parseLong(s[17] + s[18],16));
+                                // 内管温度
+                                returnData1.setReWaterTemperature(Long.parseLong(s[19] + s[20],16));
+                                // 外管温度
+                                returnData1.setBeiYiTemperature(Long.parseLong(s[21] + s[22],16));
+                                // 集热温度
+                                returnData1.setBeiErTemperature(Long.parseLong(s[23] + s[24],16));
+                                String addTime = format.format(jsonBeen.getAddTime());
+                                returnData1.setAddTime(addTime);
+
+                                pageList.add(returnData1);
+                                //根据 addTime,设备UUID 查询数据库是否已有该条数据
+                                DeviceReturnData deviceReData = deviceReService.queryDeviceDataByAddTime(addTime,clientUuid);
+                                String isRead = s[1];
+                                // 返回数据第三位代表操作类型，03：读取，06：操作。并且时间不同再往数据库保存
+                                if (isRead.equals("03") && deviceReData == null){
+                                    deviceReService.insertDeviceReData(returnData1);
+                                }
+//                            }else {
+//                                //风机解析
+//                            }
                         }
                     }
                 }else {
@@ -155,17 +168,6 @@ public class AppRunner implements ApplicationRunner {
                 device.setRemarks(remarks);
                 deviceService.insertDevice(device);
             }
-            //查询
-//            List<Device> deviceList = deviceService.findAll();
-//            for(Device device : deviceList){
-//                stringList.add(device.getUuid());
-//            }
-//            //返回数据中的设备UUID和数据库中的作比较，如果返回中没有，数据库中有，就删除。保持数据一致
-//            List<String> diffrent = CompareListUtils.getDiffrent(list, stringList);
-//            for (int j = 0; j < diffrent.size(); j++){
-//                String deviUuid = diffrent.get(j);
-//                deviceService.deleteDevice(deviUuid);
-//            }
         }
     }
 }
