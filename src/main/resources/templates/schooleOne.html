@@ -67,58 +67,32 @@
         
   </script>
 <!-- //第二步：建立视图。用于呈现渲染结果。 -->
+<!-- [{"valveStatus":"关","inletTemperature":"30","rewaterTemperature":"60","deviceHumidity":"70","beiyiTemperature":"90","beierTemperature":"80","deviceStatus":"0","typeName":"温控器","deviceName":"温控器设备","zhuangtai":"关"}
+,{"valveStatus":"关","rewaterTemperature":"60","deviceHumidity":"70","beiyiTemperature":"90","beierTemperature":"80","deviceStatus":"0","typeName":"温控器","deviceName":"温控器设备","zhuangtai":"关"}
+,{"valveStatus":"关","inletTemperature":"30","deviceHumidity":"70","beiyiTemperature":"90","deviceStatus":"0","typeName":"温控器","deviceName":"温控器设备","zhuangtai":"关"}
+,{"valveStatus":"关","inletTemperature":"30","rewaterTemperature":"60","beiyiTemperature":"90","deviceStatus":"0","typeName":"温控器","deviceName":"温控器设备","zhuangtai":"关"}
+] -->
 <!-- //第三步：渲染模版 -->
 <script type="text/javascript">
+	// 设置定时器
+	var t1 = window.setInterval(repeat,1000);
+	function repeat(){
+		$.post('/device/getDeviceData',{"uuid":"8622d15dff814"},function (res) {
+		// 开始解析
 			layui.use('laytpl', function(){
 			var laytpl = layui.laytpl;
-			var mycars = new Array()
-			 var mycars=[{"valveStatus":"关","inletTemperature":"30","rewaterTemperature":"60","deviceHumidity":"70","beiyiTemperature":"90","beierTemperature":"80","deviceStatus":"0","typeName":"温控器","deviceName":"温控器设备","zhuangtai":"关"}
-			,{"valveStatus":"关","rewaterTemperature":"60","deviceHumidity":"70","beiyiTemperature":"90","beierTemperature":"80","deviceStatus":"0","typeName":"温控器","deviceName":"温控器设备","zhuangtai":"关"}
-			,{"valveStatus":"关","inletTemperature":"30","deviceHumidity":"70","beiyiTemperature":"90","deviceStatus":"0","typeName":"温控器","deviceName":"温控器设备","zhuangtai":"关"}
-			,{"valveStatus":"关","inletTemperature":"30","rewaterTemperature":"60","beiyiTemperature":"90","deviceStatus":"0","typeName":"温控器","deviceName":"温控器设备","zhuangtai":"关"}
-		]
+			console.log(res.data);
 			var data = { //数据
 			"title":"温控器"
-			,"list":mycars
+			,"list":res.data
 			}
 			var getTpl = demo.innerHTML
 			,view = document.getElementById('view');
 			laytpl(getTpl).render(data, function(html){
 			view.innerHTML = html;
 			});
-			//直接解析字符
-			laytpl('{{ d.name }}是一位公猿').render({
-				name: '贤心'
-			}, function(string){
-				console.log(string); //贤心是一位公猿
-			});
-			
-			//你也可以采用下述同步写法，将 render 方法的回调函数剔除，可直接返回渲染好的字符
-			var string =  laytpl('{{ d.name }}是一位公猿').render({
-				name: '贤心'
-			});
-			console.log(string);  //贤心是一位公猿
-			
-			//如果模板较大，你也可以采用数据的写法，这样会比较直观一些
-			laytpl([
-				'{{ d.name }}是一位公猿'
-				,'其它字符 {{ d.content }}  其它字符'
-			].join(''))
 			}); 
-	// 设置定时器
-	// var t1 = window.setInterval(repeat,3000); 
-	function repeat(){
-		$.post('/iotApi/getReceiveMsg',{"uuid":"8622d15dff814"},function (res) {
-		// 开始解析
-			var msg=res.msg;
-            if (res.code == 1) {
-				if(msg.substr(7,4)=="0008"){
-					document.getElementById("zhuangtai").innerHTML="开着";
-					console.log("测试");
-				}
-				
-            }
-        })
+	        })
 	}
 	//去掉定时器的方法 
 	// window.clearInterval(t1)
