@@ -28,6 +28,7 @@ public class DeviceController {
     @Autowired
     AppRunner appRunner;
 
+    @CrossOrigin
     @GetMapping("/getDevice")
     public Map<String,Object> queryAllDevice(){
         Map<String,Object> map = new HashMap<>();
@@ -65,7 +66,7 @@ public class DeviceController {
      * 获取设备信息
      * @return
      */
-    @PostMapping("/getDeviceData")
+        @PostMapping("/getDeviceData")
     public Map<String,Object> getDeviceData(){
         List list = appRunner.pageList;
         Map<String,Object> map = new HashMap<>();

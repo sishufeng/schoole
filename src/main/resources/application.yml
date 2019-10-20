@@ -17,6 +17,12 @@ spring:
     static-path-pattern: /static/**
 mybatis:
   mapper-locations: classpath:mapper/*Mapper.xml
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+# 打印SQL语句
+logging:
+  level:
+    com.leien.dao : debug
 
 pagehelper:
   helper-dialect: mysql

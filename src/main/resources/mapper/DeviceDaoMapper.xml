@@ -2,29 +2,43 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.leien.dao.DeviceDao" >
     <resultMap id="deviceMap" type="com.leien.entity.Device">
-        <result column="id" property="id" jdbcType="VARCHAR"/>
-        <result column="device_type" property="deviceType" jdbcType="INTEGER"/>
-        <result column="valve_status" property="valveStatus" jdbcType="INTEGER"/>
-        <result column="inlet_temperature" property="inletTemperature" />
-        <result column="rewater_temperature" property="reWaterTemperature" />
-        <result column="device_humidity" property="deviceHumidity" />
-        <result column="beiyi_temperature" property="beiYiTemperature" />
-        <result column="beier_temperature" property="beiErTemperature" />
-        <result column="create_time" property="createTime" jdbcType="DATE"/>
-        <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
-        <result column="device_remark" property="deviceRemark" jdbcType="VARCHAR"/>
-        <result column="device_status" property="deviceStatus" jdbcType="INTEGER"/>
-        <result column="device_uuid" property="deviceUUID" jdbcType="VARCHAR"/>
-        <result column="affiliated_school" property="affiliatedSchool" jdbcType="VARCHAR"/>
-    </resultMap>
+    <result column="device_type" property="deviceType" jdbcType="INTEGER"/>
+    <result column="valve_status" property="valveStatus" jdbcType="INTEGER"/>
+    <result column="inlet_temperature" property="inletTemperature" />
+    <result column="rewater_temperature" property="reWaterTemperature" />
+    <result column="device_humidity" property="deviceHumidity" />
+    <result column="beiyi_temperature" property="beiYiTemperature" />
+    <result column="beier_temperature" property="beiErTemperature" />
+    <result column="create_time" property="createTime" jdbcType="DATE"/>
+    <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
+    <result column="device_remark" property="deviceRemark" jdbcType="VARCHAR"/>
+    <result column="device_status" property="deviceStatus" jdbcType="INTEGER"/>
+    <result column="device_uuid" property="deviceUUID" jdbcType="VARCHAR"/>
+    <result column="affiliated_school" property="affiliatedSchool" jdbcType="VARCHAR"/>
+</resultMap>
     <!-- 查询所有设备 -->
     <select id="findAll" resultMap="deviceMap">
         SELECT * FROM device
     </select>
-    <!-- 查询当前设备是否在线(根据设备返回数据中有没有UUID) 0：不在线，1：在线-->
-    <select id="queryDeviceByUuid" parameterType="String">
-        select count (1) from device where device_uuid=#{deviceUUID}
+
+    <!-- 查询当前设备信息-->
+    <select id="queryDeviceByUuid" resultType="List">
+        select *  from device where uuid in
+            <foreach item="item"  collection="list" open="(" separator="," close=")">
+                        #{item}
+            </foreach>
     </select>
+
+    <!-- 查询设备是否存在 -->
+    <select id="queryDeviceIsExistByUuid" parameterType="String" resultType="int">
+        select count(uuid) from device where uuid=#{deviceUUID}
+    </select>
+
+    <!-- 单条插入 -->
+    <insert id="insertDevice" parameterType="com.leien.entity.Device">
+        insert into device (uuid,device_name,remarks,type_name,zhaungtai)
+        values (#{uuid},#{deviceName},#{remarks},#{typeName},#{zhaungtai})
+    </insert>
 
     <!-- 批量插入设备信息 -->
     <insert id="bulkInsertDevice" parameterType="com.leien.entity.Device">
@@ -35,5 +49,15 @@
         )
           </foreach>
     </insert>
+
+    <!-- 根据UUID删除设备 -->
+    <delete id="deleteDevice" parameterType="String">
+        delete from device where uuid = #{deviUuid}
+    </delete>
+
+    <!-- 删除所有设备信息 -->
+    <delete id="deleteDevicesAll">
+        delete from device
+    </delete>
 
 </mapper>

@@ -14,9 +14,6 @@ import java.util.Date;
 @Data
 public class Device {
 
-
-    private String id;
-
     /**
      * 设备类型(0=温控器，1=风机)
      */

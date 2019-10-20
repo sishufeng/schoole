@@ -33,14 +33,24 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     /**
-     * 根据设备UUID查询设备是否存在
+     * 根据设备UUID查询设备信息
+     * @param uuidList
+     * @return
+     */
+    @Override
+    public List<String> queryDeviceByUuid(List<String> uuidList) {
+
+        return deviceDao.queryDeviceByUuid(uuidList);
+    }
+
+    /**
+     * 根据uuid查询设备是否存在
      * @param deviceUUID
      * @return
      */
     @Override
-    public int queryDeviceByUuid(String deviceUUID) {
-
-        return deviceDao.queryDeviceByUuid(deviceUUID);
+    public int queryDeviceIsExistByUuid(String deviceUUID) {
+        return deviceDao.queryDeviceIsExistByUuid(deviceUUID);
     }
 
     /**
@@ -61,5 +71,35 @@ public class DeviceServiceImpl implements DeviceService {
             transactionManager.rollback(status);
             throw ex;
         }
+    }
+
+    /**
+     * 单条插入设备信息
+     * @param device
+     * @return
+     */
+    @Override
+    public int insertDevice(Device device) {
+
+        return deviceDao.insertDevice(device);
+    }
+
+    /**
+     * 根据设备UUID，删除设备
+     * @param deviUuid
+     * @return
+     */
+    @Override
+    public int deleteDevice(String deviUuid) {
+        return deviceDao.deleteDevice(deviUuid);
+    }
+
+    /**
+     * 删除所有设备信息
+     * @return
+     */
+    @Override
+    public int deleteDevicesAll() {
+        return deviceDao.deleteDevicesAll();
     }
 }

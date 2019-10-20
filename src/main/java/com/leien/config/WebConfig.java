@@ -54,7 +54,7 @@ public class WebConfig implements WebMvcConfigurer {
                 .addInterceptor(new MyInterceptorConfig())
                 .addPathPatterns(Arrays.asList("/**"))
 //                .excludePathPatterns(Arrays.asList("/**","/static/**"));
-                .excludePathPatterns(Arrays.asList("/login","/user/login","/static/**"));
+                .excludePathPatterns(Arrays.asList("/login","/device/getDevice","/user/login","/static/**"));
 
     }
 

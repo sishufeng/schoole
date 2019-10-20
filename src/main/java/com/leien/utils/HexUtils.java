@@ -13,6 +13,26 @@ import java.util.Map;
  * @ClassName: HexUtils
  */
 public class HexUtils {
+
+
+    /**
+     * 分割传回来的16进制的字符串已空格分开
+     * @param string
+     * @return
+     */
+    public static String[] subStringData(String string){
+        int z = 0;
+        StringBuilder sb = new StringBuilder();
+        for(int i=0;i<string.length()/2;i++){
+            String substring = string.substring(z, z + 2);
+            sb.append(substring);
+            sb.append(" ");
+            z = z+2;
+        }
+        String[] hexData = sb.toString().split(" ");
+        return hexData;
+    }
+
     /**
      * 16进制的字符串表示转成字节数组
      *
@@ -21,16 +41,14 @@ public class HexUtils {
      **/
 
     public static byte[] toByteArray(String hexString) {
-        String substring = hexString.substring(8, 38);
-        hexString = substring.replaceAll(" ", "");
-        final byte[] byteArray = new byte[hexString.length() / 2];
+        final byte[] byteArray = new byte[hexString.length() / 4];
         int k = 0;
         //因为是16进制，最多只会占用4位，转换成字节需要两个16进制的字符，高位在先
         for (int i = 0; i < byteArray.length; i++) {
             byte high = (byte) (Character.digit(hexString.charAt(k), 16) & 0xff);
             byte low = (byte) (Character.digit(hexString.charAt(k + 1), 16) & 0xff);
             byteArray[i] = (byte) (high << 4 | low);
-            k += 2;
+            k += 4;
         }
         return byteArray;
     }
@@ -48,7 +66,7 @@ public class HexUtils {
     }
 
     public static void main(String[] args) {
-        String str = "33 03 16 00 00 00 13 00 0A 00 11 00 0D 00 27 00 00 00 29 00 29 00 29 00 29 D4 EC";
+        String str = "33031600000013000a0012000b003000000029002900290029d09f";
         Map<String,Object> map = new HashMap<>();
         byte[] bytes = toByteArray(str);
         Object[] data = getData(bytes);

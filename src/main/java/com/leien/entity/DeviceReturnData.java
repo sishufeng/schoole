@@ -10,21 +10,47 @@ import lombok.Data;
  */
 @Data
 public class DeviceReturnData {
-    private Integer id;
+
+    private String id;
     /**
      * 设备ID
      */
-    private Integer deviceId;
+    private String deviceId;
     /**
-     * 设备类型ID
+     * 设备类型(0=温控器，1=风机)
      */
-    private Integer deviceTypeId;
+    private Integer deviceType;
     /**
-     * 设备温度
+     * 进水温度
      */
-    private Double temperature;
+    private double inletTemperature;
     /**
-     * 设备湿度
+     * 回水温度
      */
-    private Double humidity;
+    private double reWaterTemperature;
+    /**
+     * 阀门状态(0：关，1：开)
+     */
+    private Integer valveStatus;
+
+    /**
+     * 备一温度
+     */
+    private double beiYiTemperature;
+    /**
+     * 备二温度
+     */
+    private double  beiErTemperature;
+    /**
+     * 设备类型名称
+     */
+    private String typeName;
+    /**
+     * 添加时间
+     */
+    private String addTime;
+    /**
+     * 设备UUID
+     */
+    private String deviceUuid;
 }

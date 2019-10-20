@@ -20,15 +20,40 @@ public interface DeviceService {
 
     /**
      * 根据设备UUID查询设备
+     * @param uuidList
+     * @return
+     */
+    List<String> queryDeviceByUuid(@Param("list") List<String> uuidList);
+    /**
+     * 根据设备UUID查询设备是否存在
      * @param deviceUUID
      * @return
      */
-    int queryDeviceByUuid(String deviceUUID);
+    int queryDeviceIsExistByUuid(String deviceUUID);
 
     /**
-     * 保存设备信息
+     * 批量插入设备信息
      * @param deviceList
      * @return
      */
     int bulkInsertDevice(@Param("deviceList") List<Device> deviceList);
+
+    /**
+     *  单条插入设备信息
+     * @return
+     */
+    int insertDevice(Device device);
+
+    /**
+     * 根据设备UUID
+     * @param deviUuid
+     * @return
+     */
+    int deleteDevice(String deviUuid);
+
+    /**
+     * 删除所有设备信息
+     * @return
+     */
+    int deleteDevicesAll();
 }
