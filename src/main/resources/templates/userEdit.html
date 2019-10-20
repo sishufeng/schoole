@@ -64,32 +64,26 @@
             var id;
             var roleId;
                 // Firefox, Google Chrome, Opera, Safari, Internet Explorer from version 9
-                function OnInput (event) {
+            function OnInput (event) {
                     userName= event.target.value;
-                    console.log(userName);
             }
             // Internet Explorer
             function OnPropChanged (event) {
                 // if (event.propertyName.toLowerCase () == "value") {
                         userName= event.srcElement.value;
-                    console.log(userName);
                 // }
             }
             function OnInputphone (event) {
                     phone= event.target.value;
-                    console.log(phone);
             }
             function OnPropChangedphone (event) {
                         phone= event.srcElement.value;
-                    console.log(phone);
             }
             function OnInputroleId (event) {
                     roleId= event.target.value;
-                    console.log(roleId);
             }
             function OnPropChangedroleId (event) {
                      roleId= event.srcElement.value;
-                    console.log(roleId);
             }
                 
         layui.use(['form', 'layedit', 'laydate','layer'], function(){

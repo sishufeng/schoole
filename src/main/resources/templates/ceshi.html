@@ -33,19 +33,6 @@
             layui.use('table', function(){
               var $=layui.$;
               var table = layui.table;
-              var _tools = {
-                // 添加成功
-               func1: function(){
-                layer.msg("添加成功", { anim: 6, time: 3000 });
-                       },
-                func3: function(){
-                layer.msg("手机号重复！！！", { anim: 6, time: 3000 });
-                       },
-                func2: function(){
-                layer.msg("用户名重复！！！", { anim: 6, time: 3000 });
-                       }
-                    }
-              window.tools = _tools;
               var _tooxs = {
                 // 添加成功
                func1: function(){
@@ -109,8 +96,12 @@
                     },
                     end: function(){
                       var hstatus = $('#handle_status').val();
-                      window.parent.layer.msg(hstatus);
-                      window.location.reload();
+                      console.log(hstatus);
+                      if(hstatus==undefined||hstatus==""||hstatus==null){
+                      }else{
+                        window.parent.layer.msg(hstatus);
+                        window.location.reload();
+                      }
                     },
                 });
                 }else if(obj.event ==='getCheckData'){

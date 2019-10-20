@@ -2,9 +2,6 @@ html,body{
     height:100%;
     margin: 0px;
 }
-nav.navbar{
-    height: 6%;
-}
 /* 首页开始 */
 
 .daohang {
@@ -63,16 +60,15 @@ nav.navbar{
 
 /* 首页结束 */
 section{
-    height: 90%;
+    height: 100%;
     width: 100%;
     background: red; 
 }
 section.hero {
-
     background: url(../img/oo.png) no-repeat;
     background-size:100% 100%;
     /* background-attachment: fixed; */
-    height: 94%;     
+    /* height: 94%;      */
     /* background: burlywood;  */
 
 }

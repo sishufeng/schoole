@@ -5,168 +5,119 @@
 <meta charset="UTF-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge"> 
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css" href="../static/css/DeviceInformation.css" />
 <link rel="stylesheet" href="../static/layui/css/layui.css">
+<link rel="stylesheet" type="text/css" href="../static/css/schooleOne.css" />
 <!-- <link rel="stylesheet" href="//res.layui.com/layui/dist/css/layui.css"  media="all"> -->
 <title>login</title>
-<script type="text/javascript">
-</script>
+<style>
+	#ceshi{
+		color:lightpink;
+		/* width: 100px;
+		height: 100px;
+		background: url(../static/img/oo.png) no-repeat; */
+	}
+</style>
 </head>
 <body>
-<!-- <nav class="navbar">
-	<div class="daohang">
-		<a href="">用户管理</a>
-		<div class="gaikuang">
-			<div>数据管理</div>
-			<div class="xiehui">
-				<a href="">折线图</a>
-				<a href="">饼图</a>
-				<a href="">柱状图</a>
-			</div>
-		</div>
-
-	</div>
-</header>
-</nav> -->
 <section class="hero">
-	<div class="left">
-
+	<div id="view">
+		
 	</div>
-	<div class="right">
-		<div class="div_in">
-			<!-- onmouseout="myClickhide('one')" onmouseover="myClickshow('one')" -->
-			<div class="div_in2" >
-				<div id="one"  class="div_tag2">
-					<div class="div_meau2">温度:36°C</div>
-					<div class="div_meau2">温度:36°C</div>
-					<div class="div_meau2">温度:36°C</div>
-					<div class="div_meau2">温度:36°C</div>
-					<div class="div_meau2">开关状态:关</div>
-				</div>
-			</div>
-			<div class="div_in3" >
-					<div id="two"  class="div_tag3">
-						<div class="div_meau3">温度:36°C</div>
-						<div class="div_meau3">温度:36°C</div>
-						<div class="div_meau3">温度:36°C</div>
-						<div class="div_meau3">温度:36°C</div>
-						<div class="div_meau3">开关状态:开</div>
-					</div>
-				</div>
-		</div>
-		<div class="div_inone">
-				<div class="div_in2">
-					<div id="three"  class="div_tag4">
-						<div class="div_meau4">温度:36°C</div>
-						<div class="div_meau4">温度:36°C</div>
-						<div class="div_meau4">温度:36°C</div>
-						<div class="div_meau4">温度:36°C</div>
-						<div class="div_meau4">开关状态:关</div>
-					</div>
-				</div>
-				<div class="div_in3" >
-						<div id="four"  class="div_tag5">
-							<div class="div_meau5">温度:36°C</div>
-							<div class="div_meau5">温度:36°C</div>
-							<div class="div_meau5">温度:36°C</div>
-							<div class="div_meau5">温度:36°C</div>
-							<div class="div_meau5">开关状态:开</div>
-						</div>
-					</div>
-		</div>
-		<div class="div_intwo">
-				<div class="div_in2" >
-					<div id="five"  class="div_tag4">
-						<div class="div_meau6">温度:36°C</div>
-						<div class="div_meau6">温度:36°C</div>
-						<div class="div_meau6">温度:36°C</div>
-						<div class="div_meau6">温度:36°C</div>
-						<div class="div_meau6">开关状态:关</div>
-					</div>
-				</div>
-				<div class="div_in3" >
-						<div id="six"  class="div_tag5">
-							<div class="div_meau7">温度:36°C</div>
-							<div class="div_meau7">温度:36°C</div>
-							<div class="div_meau7">温度:36°C</div>
-							<div class="div_meau7">温度:36°C</div>
-							<div class="div_meau7">开关状态:开</div>
-						</div>
-					</div>
-		</div>
-		<div class="div_inthree">
-				<div class="div_in2" >
-					<div id="seven"  class="div_tag4">
-						<div class="div_meau8">温度:36°C</div>
-						<div class="div_meau8">温度:36°C</div>
-						<div class="div_meau8">温度:36°C</div>
-						<div class="div_meau8">温度:36°C</div>
-						<div class="div_meau8">开关状态:关</div>
-					</div>
-				</div>
-				<div class="div_in3" >
-						<div id="eight"  class="div_tag5">
-							<div class="div_meau9">温度:36°C</div>
-							<div class="div_meau9">温度:36°C</div>
-							<div class="div_meau9">温度:36°C</div>
-							<div class="div_meau9">温度:36°C</div>
-							<div class="div_meau9">开关状态:开</div>
-						</div>
-					</div>
-		</div>
-		<div class="div_infive">
-				<div class="div_in2" >
-					<div id="nine"  class="div_tag4">
-						<div class="div_meau10">温度:36°C</div>
-						<div class="div_meau10">温度:36°C</div>
-						<div class="div_meau10">温度:36°C</div>
-						<div class="div_meau10">温度:36°C</div>
-						<div class="div_meau10">开关状态:关</div>
-					</div>
-				</div>
-				<div class="div_in3">
-						<div id="ten"  class="div_tag5">
-							<div class="div_meau11">温度:36°C</div>
-							<div class="div_meau11">温度:36°C</div>
-							<div class="div_meau11">温度:36°C</div>
-							<div class="div_meau11">温度:36°C</div>
-							<div class="div_meau11">开关状态:开</div>
-						</div>
-					</div>
-		</div>
-		<div class="div_insix">
-				<div class="div_in2">
-					<div id="eleven"  class="div_tag4">
-						<div class="div_meau11">温度:36°C</div>
-						<div class="div_meau11">温度:36°C</div>
-						<div class="div_meau11">温度:36°C</div>
-						<div class="div_meau11">温度:36°C</div>
-						<div id="zhuangtai" class="div_meau11">开关状态:关</div>
-					</div>
-				</div>
-		</div>
-	</div>
-	
-
 </section>
+<script src="../static/layui/layui.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
-<script>
-	// 鼠标移入时，显示暗红。隐藏下拉框
-	$(".gaikuang").mouseover(function() {
-		$(this).css("background-color", "#812323")
-		$(".xiehui").eq($(this).index() - 1).show();
-	});
-	// 鼠标移出后，显示红色（和背景色是一个颜色），展示下拉框
-	$(".gaikuang").mouseout(function() {
-		$(this).css("background-color", "#d80505")
-		$(".xiehui").hide();
-	});
+<!-- //第一步：编写模版。你可以使用一个script标签存放模板，如： -->
+<script id="demo" type="text/html">
+	<h3>{{ d.title }}</h3>
+<ul>
+{{#  layui.each(d.list, function(index, item){ }}
+	<div id="views">
+		<div class="zuotop">{{ item.deviceName }}</div>
+		<div class="zuo">
+			<div class="zuoimg"><img src="../static/img/oo.png" alt=""></div>
+			<div class="zuodata">
+				<ul>
+					<li>{{ item.valveStatus }}</li>
+					<li>{{ item.inletTemperature }}℃</li>
+					<li>{{ item.rewaterTemperature }}℃</li>
+				</ul>
+				<ul>
+					<li>{{ item.deviceStatus }}℃</li>
+					<li>{{ item.typeName }}</li>
+					<li>{{ item.beierTemperature }}℃</li>
+				</ul>
+				<ul>
+					<li>{{ item.zhuangtai }}</li>
+					<li>{{ item.deviceHumidity }}℃</li>
+					<li>{{ item.beiyiTemperature }}℃</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+{{#  }); }}
+ 
+{{#  if(d.list.length === 0){ }}
+  无数据
+{{#  } }} 
+</ul>
+        
+  </script>
+ 
+<!-- //第二步：建立视图。用于呈现渲染结果。 -->
 
-</script>
+ 
+<!-- //第三步：渲染模版 -->
+
 <script type="text/javascript">
+			layui.use('laytpl', function(){
+			var laytpl = layui.laytpl;
+			var mycars = new Array()
+			 var mycars=[{"valveStatus":"关","inletTemperature":"30","rewaterTemperature":"60","deviceHumidity":"70","beiyiTemperature":"90","beierTemperature":"80","deviceStatus":"0","typeName":"温控器","deviceName":"温控器设备","zhuangtai":"关"}
+			,{"valveStatus":"关","rewaterTemperature":"60","deviceHumidity":"70","beiyiTemperature":"90","beierTemperature":"80","deviceStatus":"0","typeName":"温控器","deviceName":"温控器设备","zhuangtai":"关"}
+			,{"valveStatus":"关","inletTemperature":"30","deviceHumidity":"70","beiyiTemperature":"90","deviceStatus":"0","typeName":"温控器","deviceName":"温控器设备","zhuangtai":"关"}
+			,{"valveStatus":"关","inletTemperature":"30","rewaterTemperature":"60","beiyiTemperature":"90","deviceStatus":"0","typeName":"温控器","deviceName":"温控器设备","zhuangtai":"关"}
+		]
+			var data = { //数据
+			"title":"温控器"
+			,"list":mycars
+			}
+			var getTpl = demo.innerHTML
+			,view = document.getElementById('view');
+			laytpl(getTpl).render(data, function(html){
+			view.innerHTML = html;
+			});
+
+
+
+			//直接解析字符
+			laytpl('{{ d.name }}是一位公猿').render({
+				name: '贤心'
+			}, function(string){
+				console.log(string); //贤心是一位公猿
+			});
+			
+			//你也可以采用下述同步写法，将 render 方法的回调函数剔除，可直接返回渲染好的字符
+			var string =  laytpl('{{ d.name }}是一位公猿').render({
+				name: '贤心'
+			});
+			console.log(string);  //贤心是一位公猿
+			
+			//如果模板较大，你也可以采用数据的写法，这样会比较直观一些
+			laytpl([
+				'{{ d.name }}是一位公猿'
+				,'其它字符 {{ d.content }}  其它字符'
+			].join(''))
+
+
+
+			}); 
+		
+
+
+
 	// 设置定时器
 	// var t1 = window.setInterval(repeat,3000); 
 	function repeat(){

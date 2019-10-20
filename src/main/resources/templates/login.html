@@ -5,16 +5,13 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>login</title>
-    <link rel="stylesheet" type="text/css" href="/static/css/normalize.css" />
-    <link rel="stylesheet" type="text/css" href="/static/css/demo.css" />
+    <link rel="stylesheet" href="../static/layui/css/layui.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="../static/css/demo.css" />
     <!--必要样式-->
-    <link rel="stylesheet" type="text/css" href="/static/css/component.css" />
-    <!--[if IE]>
-    <script src="js/html5.js" ></script>
-
-    <![endif]-->
+    <link rel="stylesheet" type="text/css" href="../static/css/component.css" />
 </head>
-<body>
+<body οnlοad="myfunction()">
 <div class="container demo-1">
     <div class="content">
         <div id="large-header" class="large-header">
@@ -24,31 +21,68 @@
                 <form action="#" name="f" method="post">
                     <div class="input_outer">
                         <span class="u_user"></span>
-                        <input id="phone" name="phone" class="text" style="color: #FFFFFF !important" type="text" placeholder="请输入账户">
+                        <input id="phone" name="phone"  class="text" style="color: #FFFFFF !important" type="text" placeholder="请输入账户">
                     </div>
                     <div class="input_outer">
                         <span class="us_uer"></span>
-                        <input id="pwd" name="password" class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;"value="" type="password" placeholder="请输入密码">
+                        <input id="pwd" name="password"  class="text" style="color: #FFFFFF !important; position:absolute; z-index:100;"  type="password" placeholder="请输入密码">
                     </div>
-                    <div class="mb2" onclick="login()"><a class="act-but submit" href="javascript:;" style="color: #FFFFFF">登录</a></div>
+                    <div class="layui-form" action="" onclick="test();">
+                        <input type="checkbox"  name="like1[write]" lay-skin="primary" title="记住我" >
+                    </div>  
+                    <div class="mb2" onclick="login()"><a class="act-but submit"  style="color: #FFFFFF">登录</a></div>
                 </form>
             </div>
         </div>
     </div>
-</div><!-- /container -->
+</div>
+<script src="../static/layui/layui.js"></script>
 <script src="../static/js/TweenLite.min.js"></script>
 <script src="../static/js/EasePack.min.js"></script>
 <script src="../static/js/rAF.js"></script>
 <script src="../static/js/demo-1.js"></script>
+<script src="../static/js/jquery.min.js"></script>
 <div style="text-align:center;">
 </div>
 </body>
-<script src="../static/js/jquery.min.js"></script>
-<script src="https://cdn.bootcss.com/jquery/3.2.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
 <script type="text/javascript">
-    $(function () {
-
-    })
+    layui.use(['form', 'layedit', 'laydate'], function(){
+          var form = layui.form
+          ,layer = layui.layer
+          ,layedit = layui.layedit
+          ,laydate = layui.laydate;
+          
+        });
+    var ph;
+    var pw;
+    var heName01;
+    var heName02;
+     // 记住我
+     function test() {
+        ph=document.getElementById("phone").value;
+        pw=document.getElementById("pwd").value;
+        console.log(ph+pw);
+        localStorage.setItem("ph", ph);
+        localStorage.setItem("pw", pw);
+        heName01= localStorage.getItem("ph");
+        heName02= localStorage.getItem("pw");
+        console.log(heName01);
+        console.log(heName02);
+    } 
+    window.onload = function(){myfunction();};
+    function myfunction(){
+        heName01= localStorage.getItem("ph");
+        heName02= localStorage.getItem("pw"); 
+        console.log(heName01);
+        console.log(heName02);
+        if(heName01==null&&heName02==null){
+        }else{
+            console.log(heName01);
+            document.getElementById("phone").value=heName01;
+            document.getElementById("pwd").value=heName02;
+        }
+    }
     function login() {
         var phone = $("#phone").val();
         var pwd = $("#pwd").val();
@@ -69,7 +103,6 @@
             alert("密码必须大于6位数！！");
             return false;
         }
-
         $.post('/user/login',{"phone":phone,"password":pwd},function (res) {
             console.log(pwd);
             if(res.data != null){
