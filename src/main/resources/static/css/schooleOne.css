@@ -1,0 +1,47 @@
+body{
+    font-size: 18px;
+}
+#view h3{
+    display: none;
+}
+#view{
+    border:1px solid #F1F3F4; 
+    height: 300px;
+}
+#views{
+    height: 300px;
+    width: 100%;
+    /* background: firebrick; */
+    /* display: flex; */
+}
+.zuotop{
+    height: 50px;
+    line-height: 50px;
+    padding-left: 60px;
+    border-bottom:1px solid #F1F3F4;
+}
+/* 下 */
+.zuo{
+    display: flex;
+    height: 250px;
+}
+.zuoimg{
+    width: 200px;
+    height: 200px;
+    line-height: 250px;
+    padding: 0 50px;
+}
+.zuoimg img{
+    width: 200px;
+    height: 200px;
+}
+.zuodata{
+    padding-top: 50px;
+    width:100%;
+}
+.zuodata ul{
+    float:left;width:15%;
+}
+.zuodata ul li{
+    padding: 10px 0;
+}
