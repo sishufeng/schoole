@@ -5,12 +5,13 @@ body{
     display: none;
 }
 #view{
-    border:1px solid #F1F3F4; 
+    
     height: 300px;
 }
 #views{
     height: 300px;
     width: 100%;
+    border:1px solid #F1F3F4;
     /* background: firebrick; */
     /* display: flex; */
 }

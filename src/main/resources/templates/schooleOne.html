@@ -40,20 +40,21 @@
 			<div class="zuoimg"><img src="../static/img/oo.png" alt=""></div>
 			<div class="zuodata">
 				<ul>
-					<li>{{ item.valveStatus }}</li>
-					<li>{{ item.inletTemperature }}℃</li>
-					<li>{{ item.rewaterTemperature }}℃</li>
+					<li>阀门状态:{{ item.valveStatus }}</li>
+					<li>冷水温度:{{ item.inletTemperature }}℃</li>
+					<li>内管温度:{{ item.rewaterTemperature }}℃</li>
 				</ul>
 				<ul>
+					
+					<li>设备状态:{{ item.zhuangtai }}</li>
+					<li>外管温度:{{ item.beiyiTemperature }}℃</li>
+					<li>集热温度:{{ item.beierTemperature }}℃</li>
+				</ul>
+				<!-- <ul>
 					<li>{{ item.deviceStatus }}℃</li>
 					<li>{{ item.typeName }}</li>
-					<li>{{ item.beierTemperature }}℃</li>
-				</ul>
-				<ul>
-					<li>{{ item.zhuangtai }}</li>
 					<li>{{ item.deviceHumidity }}℃</li>
-					<li>{{ item.beiyiTemperature }}℃</li>
-				</ul>
+				</ul> -->
 			</div>
 		</div>
 	</div>
@@ -65,12 +66,8 @@
 </ul>
         
   </script>
- 
 <!-- //第二步：建立视图。用于呈现渲染结果。 -->
-
- 
 <!-- //第三步：渲染模版 -->
-
 <script type="text/javascript">
 			layui.use('laytpl', function(){
 			var laytpl = layui.laytpl;
@@ -89,9 +86,6 @@
 			laytpl(getTpl).render(data, function(html){
 			view.innerHTML = html;
 			});
-
-
-
 			//直接解析字符
 			laytpl('{{ d.name }}是一位公猿').render({
 				name: '贤心'
@@ -110,14 +104,7 @@
 				'{{ d.name }}是一位公猿'
 				,'其它字符 {{ d.content }}  其它字符'
 			].join(''))
-
-
-
 			}); 
-		
-
-
-
 	// 设置定时器
 	// var t1 = window.setInterval(repeat,3000); 
 	function repeat(){

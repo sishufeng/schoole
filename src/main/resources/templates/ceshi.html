@@ -13,9 +13,9 @@
         <div class="layui-btn-container">
             <input type='text' id="handle_status" value="" hidden="hidden">
           <button class="layui-btn layui-btn-sm" lay-event="getCheckData">批量删除</button>
-          <!-- <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
-          <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button> -->
+          <!-- <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button> -->
           <button class="layui-btn layui-btn-sm" lay-event="addUser">添加用户</button>
+          <button class="layui-btn layui-btn-sm" lay-event="isAll">刷新设备列表</button>
         </div>
       </script>
       <script type="text/html" id="barDemo">
@@ -136,7 +136,30 @@
                     window.location.reload();
                     layer.close(index);
                   });
-                  
+                }else if(obj.event ==='isAll'){
+                  // 刷新设备列表
+                  layer.confirm('确定刷新设备列表吗', function(index){
+                    $.ajax({
+                        url: "/user/deleteUser",
+                        dataType: 'json',
+                        type: 'post',
+                        async: false,
+                        data: {
+                                // userId:uu,
+                              },
+                        complete: function (XHR, TS) {
+                          var returnObj = eval('(' + XHR.responseText + ')');
+                          if (returnObj.code != 200) {
+                            layer.msg(returnObj.msg, { anim: 6, time: 1500 });
+                          } else {
+                            layer.msg(returnObj.msg, { icon: 1, time: 1500 });
+                            layer.close(index);
+                          }
+                        }
+                      });
+                    layer.close(index);
+                  });
+                
                 }
                 switch(obj.event){
                   // case 'getCheckData':
