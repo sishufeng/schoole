@@ -38,17 +38,29 @@ import java.util.concurrent.TimeUnit;
 public class AppRunner implements ApplicationRunner {
 
     DeviceReturnData returnData1 ;
+
     String token ;
+    /**
+     * 返回页面集合
+     */
     public List pageList;
-//    int count = 0;
+
+    /**
+     * 注入连接远程接口工具类
+     */
     @Autowired
     APIUtil apiUtil;
 
+    /**
+     * 注入设备接口类
+     */
     @Resource
     private DeviceService deviceService;
+    /**
+     * 注入设备返回数据接口类
+     */
     @Autowired
     private DeviceReturnDataService deviceReService;
-
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
@@ -57,82 +69,124 @@ public class AppRunner implements ApplicationRunner {
         token = apiUtil.getToken();
         if (StringUtils.isEmpty(token)){
             token = apiUtil.getToken();
-        }else {
-            //获取远程设备信息
-            String deviceInformation = apiUtil.getDeviceInformation(token);
-            //保存到数据库
-            insertDevice(deviceInformation);
         }
-
-        ScheduledExecutorService executorService = new ScheduledThreadPoolExecutor(1,
+        ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(1,
                 new BasicThreadFactory.Builder().namingPattern("example-schedule-pool-%d").daemon(true).build());
-        executorService.scheduleAtFixedRate(new Runnable() {
+        scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                pageList = new ArrayList();
-                SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                if (!StringUtils.isEmpty(token)) {
-                    String returnData = apiUtil.getData(token);
-                    JSONObject jsonObject = JSON.parseObject(returnData);
-                    String deviceKey = jsonObject.getString("data");
-                    List<JsonRootBean> deviceData = JSON.parseArray(deviceKey, JsonRootBean.class);
-                    // 如果deviceData.size()>0时所有设备都在线,解析设备信息
-                    if(deviceData.size()>0){
-                        for (JsonRootBean jsonBeen : deviceData){
-                            String msg = jsonBeen.getMsg();
-                            String clientUuid = jsonBeen.getClientUuid();
-                            String[] s = HexUtils.subStringData(msg);
-                            returnData1 = new DeviceReturnData();
-                            returnData1.setId(UUIDUtils.getUuid());
-                            returnData1.setDeviceUuid(clientUuid);
-                            //设备工作类型  0=温控器，1=风机
-                            int deviceStatus = Integer.parseInt(s[4] + s[5],16);
-                            if(deviceStatus == 0){
-                                returnData1.setTypeName("温控器");
-                            }else {
-                                returnData1.setTypeName("风机");
-                            }
-                            // 温控解析
-//                            if(deviceStatus == 0){
-                                returnData1.setDeviceType(deviceStatus);
-                                // 设备阀门状态(1：开，0：关)
-                                int valveSta = Integer.parseInt(s[15] + s[16],16);
-                                if(valveSta == 0){
-                                }
-                                returnData1.setValveStatus(valveSta);
-                                //冷水温度
-                                returnData1.setInletTemperature(Long.parseLong(s[17] + s[18],16));
-                                // 内管温度
-                                returnData1.setReWaterTemperature(Long.parseLong(s[19] + s[20],16));
-                                // 外管温度
-                                returnData1.setBeiYiTemperature(Long.parseLong(s[21] + s[22],16));
-                                // 集热温度
-                                returnData1.setBeiErTemperature(Long.parseLong(s[23] + s[24],16));
-                                String addTime = format.format(jsonBeen.getAddTime());
-                                returnData1.setAddTime(addTime);
-
-                                pageList.add(returnData1);
-                                //根据 addTime,设备UUID 查询数据库是否已有该条数据
-                                DeviceReturnData deviceReData = deviceReService.queryDeviceDataByAddTime(addTime,clientUuid);
-                                String isRead = s[1];
-                                // 返回数据第三位代表操作类型，03：读取，06：操作。并且时间不同再往数据库保存
-                                if (isRead.equals("03") && deviceReData == null){
-                                    deviceReService.insertDeviceReData(returnData1);
-                                }
-//                            }else {
-//                                //风机解析
-//                            }
-                        }
-                    }
-                }else {
-                    token = apiUtil.getToken();
-                }
-//                count++;
+                //获取远程设备信息
+                String deviceInformation = apiUtil.getDeviceInformation(token);
+                List<DeviceReturnData> deviceReDataList = JSON.parseArray(deviceInformation, DeviceReturnData.class);
+                pageList = getDeviceData(deviceReDataList);
+                System.out.println(">>>>>>>>>>>>>>>>>>>"+pageList.size());
+                //保存到数据库
+                insertDevice(deviceInformation);
             }
-
-        }, 1000, 5000, TimeUnit.MILLISECONDS);
+        }, 1000, 10000, TimeUnit.MILLISECONDS);
     }
 
+
+    /**
+     * 获取设备信息
+     * @param list
+     * @return
+     */
+    public List getDeviceData(List<DeviceReturnData> list){
+        List pageList = new ArrayList();
+        for(DeviceReturnData deviceReturnData : list){
+            returnData1 = new DeviceReturnData();
+            returnData1.setName(deviceReturnData.getName());
+            //设备状态(0：离线，1：在线)
+            int deviceSta = deviceReturnData.getZhaungtai();
+            returnData1.setZhaungtai(deviceSta);
+            if (deviceSta == 1){
+                returnData1.setZhuangtaiName("在线");
+                pageList = onLineDevice(returnData1);
+            }else {
+                returnData1.setZhuangtaiName("离线");
+                returnData1.setInletTemperature(0.0);
+                returnData1.setReWaterTemperature(0.0);
+                returnData1.setBeiYiTemperature(0.0);
+                returnData1.setBeiErTemperature(0.0);
+                returnData1.setValveStatus(String.valueOf(0));
+            }
+                pageList.add(returnData1);
+        }
+        return pageList;
+    }
+
+    /**
+     * 设备在线，处理方法
+     */
+    public List onLineDevice(DeviceReturnData returnData1){
+        List pageList = new ArrayList();
+//        List<DeviceReturnData> deviceReturnDataList = new ArrayList<>();
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String returnData = apiUtil.getData(token);
+            JSONObject jsonObject = JSON.parseObject(returnData);
+            String deviceKey = jsonObject.getString("data");
+            List<JsonRootBean> deviceData = JSON.parseArray(deviceKey, JsonRootBean.class);
+            // 如果deviceData.size()>0时所有设备都在线,解析设备信息
+            if(deviceData.size()>0){
+                for (JsonRootBean jsonBeen : deviceData){
+                    String msg = jsonBeen.getMsg();
+                    String clientUuid = jsonBeen.getClientUuid();
+                    String[] s = HexUtils.subStringData(msg);
+                    returnData1.setId(UUIDUtils.getUuid());
+                    returnData1.setDeviceUuid(clientUuid);
+                    //设备工作类型  0=温控器，1=风机
+                    int deviceStatus = Integer.parseInt(s[3] + s[4],16);
+                    // 温控解析
+                    if(deviceStatus == 0){
+                        returnData1.setDeviceType("温控器");
+                        // 设备阀门状态(0：关，1：开)
+                        int valveSta = Integer.parseInt(s[15] + s[16],16);
+                        if(valveSta == 1){
+                            returnData1.setValveStatus("开");
+                        }else {
+                            returnData1.setValveStatus("关");
+                        }
+                        //冷水温度
+                        returnData1.setInletTemperature(Long.parseLong(s[17] + s[18],16));
+                        // 内管温度
+                        returnData1.setReWaterTemperature(Long.parseLong(s[19] + s[20],16));
+                        // 外管温度
+                        returnData1.setBeiYiTemperature(Long.parseLong(s[21] + s[22],16));
+                        // 集热温度
+                        returnData1.setBeiErTemperature(Long.parseLong(s[23] + s[24],16));
+                        returnData1.setAddTime(format.format(jsonBeen.getAddTime()));
+                    }else {
+                        //风机解析
+                        returnData1.setDeviceType("风机");
+                        //设备工作类型  0=温控器，1=风机
+                        int deviceSta = Integer.parseInt(s[3] + s[4],16);
+                        // 风机状态(1：开，0：关)
+                        int fanStatus = Integer.parseInt(s[15] + s[16],16);
+                        if(fanStatus == 1){
+                            returnData1.setFanStatus("开");
+                        }else {
+                            returnData1.setFanStatus("关");
+                        }
+                        returnData1.setAddTime(format.format(jsonBeen.getAddTime()));
+                    }
+                    pageList.add(returnData1);
+                    String isRead = s[1];
+                    //根据 addTime,设备UUID 查询数据库是否已有该条数据
+                    DeviceReturnData deviceReData = deviceReService.queryDeviceDataByAddTime(format.format(jsonBeen.getAddTime()),clientUuid);
+                    // 返回数据第三位代表操作类型，03：读取，06：操作。并且时间不同再往数据库保存
+                    if (isRead.equals("03") && deviceReData == null){
+                        deviceReService.insertDeviceReData(returnData1);
+//                        deviceReturnDataList.add(returnData1);
+                    }
+//                    if(deviceReturnDataList.size() % 2 == 0){
+//                        deviceReService.bulkInsertDevice(deviceReturnDataList);
+//                    }
+                }
+            }
+
+        return pageList;
+    }
 
     /**
      * 获取设备信息保存到数据库
@@ -151,11 +205,6 @@ public class AppRunner implements ApplicationRunner {
                 String zhaungtai = object.getString("zhaungtai");
                 String uuid = object.getString("uuid");
                 String remarks = object.getString("remarks");
-                if (!StringUtils.isEmpty(typeName) && typeName.equals("风机")){
-                    device.setDeviceType("0");
-                }else {
-                    device.setDeviceType("1");
-                }
                 device.setTypeName(typeName);
                 device.setDeviceName(name);
                 //设备状态(0：离线，1：在线)
