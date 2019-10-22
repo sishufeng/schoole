@@ -209,7 +209,9 @@ public class AppRunner implements ApplicationRunner {
         if (!StringUtils.isEmpty(deviceData)) {
             // 插入之前先删除所有设备信息。保持数据和远程一致
             deviceService.deleteDevicesAll();
+            //获取设备列表
             List deviceList = getDeviceList(deviceData);
+            //批量插入数据库
             deviceService.bulkInsertDevice(deviceList);
         }
     }
