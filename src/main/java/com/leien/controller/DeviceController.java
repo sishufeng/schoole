@@ -2,6 +2,7 @@ package com.leien.controller;
 
 import com.leien.applicationrunner.AppRunner;
 import com.leien.entity.Device;
+import com.leien.entity.DeviceReturnData;
 import com.leien.service.DeviceService;
 import com.leien.utils.APIUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,12 +71,23 @@ public class DeviceController {
      */
     @PostMapping("/getTemperatureControlData")
     public Map<String,Object> getTemperatureControlData(){
+        DeviceReturnData returnData1 = new DeviceReturnData();
         Map<String,Object> map = new HashMap<>();
         Map<String, List> deviceData = appRunner.deviceData;
         List temperatureControlList = deviceData.get("temperatureControl");
+        if(temperatureControlList.size() >0){
+            map.put("data",temperatureControlList);
+        }else {
+            returnData1.setZhuangtaiName("离线");
+            returnData1.setInletTemperature(0.0);
+            returnData1.setReWaterTemperature(0.0);
+            returnData1.setBeiYiTemperature(0.0);
+            returnData1.setBeiErTemperature(0.0);
+            returnData1.setValveStatus(String.valueOf(0));
+            map.put("data",returnData1);
+        }
         map.put("code","0");
         map.put("msg","");
-        map.put("data",temperatureControlList);
         return map;
     }
 
@@ -87,12 +99,18 @@ public class DeviceController {
      */
     @PostMapping("/getFanControlData")
     public Map<String,Object> getFanControlData(){
+        DeviceReturnData returnData = new DeviceReturnData();
         Map<String,Object> map = new HashMap<>();
         Map<String, List> deviceData = appRunner.deviceData;
         List fanControlList = deviceData.get("fanControl");
+        if(fanControlList.size() >0){
+            map.put("data",fanControlList);
+        }else {
+            returnData.setFanStatus("关");
+            map.put("data",returnData);
+        }
         map.put("code","0");
         map.put("msg","");
-        map.put("data",fanControlList);
         return map;
     }
 
