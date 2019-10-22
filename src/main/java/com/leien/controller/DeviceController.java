@@ -75,7 +75,7 @@ public class DeviceController {
         Map<String,Object> map = new HashMap<>();
         Map<String, List> deviceData = appRunner.deviceData;
         List temperatureControlList = deviceData.get("temperatureControl");
-        if(temperatureControlList.size() >0){
+        if(temperatureControlList != null && temperatureControlList.size() >0){
             map.put("data",temperatureControlList);
         }else {
             returnData1.setZhuangtaiName("离线");
@@ -103,7 +103,7 @@ public class DeviceController {
         Map<String,Object> map = new HashMap<>();
         Map<String, List> deviceData = appRunner.deviceData;
         List fanControlList = deviceData.get("fanControl");
-        if(fanControlList.size() >0){
+        if(fanControlList != null && fanControlList.size() >0){
             map.put("data",fanControlList);
         }else {
             returnData.setFanStatus("关");
