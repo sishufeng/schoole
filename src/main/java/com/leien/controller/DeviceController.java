@@ -50,8 +50,8 @@ public class DeviceController {
         }else {
             //获取离线设备信息
             Map<String, List> temperatureControlMap = offLineDevices(deviceData);
-            List temperatureControlDataList = temperatureControlMap.get("temperatureControlData");
-            map.put("data",temperatureControlDataList);
+            List temperatureControlDataOffLineList = temperatureControlMap.get("temperatureControlData");
+            map.put("data",temperatureControlDataOffLineList);
         }
         map.put("code","0");
         map.put("msg","");
@@ -74,8 +74,8 @@ public class DeviceController {
         }else {
             //获取离线风机设备信息
             Map<String, List> fanControlMap = offLineDevices(deviceData);
-            List fanControlDataList = fanControlMap.get("fanControlData");
-            map.put("data",fanControlDataList);
+            List fanControlDataOffLineList = fanControlMap.get("fanControlData");
+            map.put("data",fanControlDataOffLineList);
         }
         map.put("code","0");
         map.put("msg","");
