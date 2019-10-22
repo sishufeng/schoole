@@ -22,7 +22,9 @@ import org.springframework.util.StringUtils;
 import javax.annotation.Resource;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -37,13 +39,11 @@ import java.util.concurrent.TimeUnit;
 @Order(value = 1)
 public class AppRunner implements ApplicationRunner {
 
-    DeviceReturnData returnData1 ;
-
-    String token ;
+    public String token ;
     /**
-     * 返回页面集合
+     * 返给页面数据
      */
-    public List pageList;
+    public Map<String, List> deviceData;
 
     /**
      * 注入连接远程接口工具类
@@ -78,8 +78,7 @@ public class AppRunner implements ApplicationRunner {
                 //获取远程设备信息
                 String deviceInformation = apiUtil.getDeviceInformation(token);
                 List<DeviceReturnData> deviceReDataList = JSON.parseArray(deviceInformation, DeviceReturnData.class);
-                pageList = getDeviceData(deviceReDataList);
-                System.out.println(">>>>>>>>>>>>>>>>>>>"+pageList.size());
+                deviceData = getDeviceData(deviceReDataList);
                 //保存到数据库
                 insertDevice(deviceInformation);
             }
@@ -92,8 +91,10 @@ public class AppRunner implements ApplicationRunner {
      * @param list
      * @return
      */
-    public List getDeviceData(List<DeviceReturnData> list){
+    public Map<String, List> getDeviceData(List<DeviceReturnData> list){
         List pageList = new ArrayList();
+        Map<String, List> deviceListMap = new HashMap<>();
+        DeviceReturnData returnData1;
         for(DeviceReturnData deviceReturnData : list){
             returnData1 = new DeviceReturnData();
             returnData1.setName(deviceReturnData.getName());
@@ -102,7 +103,13 @@ public class AppRunner implements ApplicationRunner {
             returnData1.setZhaungtai(deviceSta);
             if (deviceSta == 1){
                 returnData1.setZhuangtaiName("在线");
-                pageList = onLineDevice(returnData1);
+                deviceListMap = onLineDevice(returnData1);
+                //温控在线设备
+                List deviceList = deviceListMap.get("device");
+                deviceListMap.put("temperatureControl",deviceList);
+                //风机在线设备
+                List fanList = deviceListMap.get("fan");
+                deviceListMap.put("fanControl",fanList);
             }else {
                 returnData1.setZhuangtaiName("离线");
                 returnData1.setInletTemperature(0.0);
@@ -110,17 +117,20 @@ public class AppRunner implements ApplicationRunner {
                 returnData1.setBeiYiTemperature(0.0);
                 returnData1.setBeiErTemperature(0.0);
                 returnData1.setValveStatus(String.valueOf(0));
-            }
                 pageList.add(returnData1);
+                deviceListMap.put("offLine",pageList);
+            }
         }
-        return pageList;
+        return deviceListMap;
     }
 
     /**
      * 设备在线，处理方法
      */
-    public List onLineDevice(DeviceReturnData returnData1){
-        List pageList = new ArrayList();
+    public Map<String,List> onLineDevice(DeviceReturnData returnData1){
+        List deviceList = new ArrayList();
+        List fanList = new ArrayList();
+        Map<String,List> map = new HashMap<>();
 //        List<DeviceReturnData> deviceReturnDataList = new ArrayList<>();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String returnData = apiUtil.getData(token);
@@ -156,6 +166,8 @@ public class AppRunner implements ApplicationRunner {
                         // 集热温度
                         returnData1.setBeiErTemperature(Long.parseLong(s[23] + s[24],16));
                         returnData1.setAddTime(format.format(jsonBeen.getAddTime()));
+                        deviceList.add(returnData1);
+                        map.put("device",deviceList);
                     }else {
                         //风机解析
                         returnData1.setDeviceType("风机");
@@ -169,8 +181,9 @@ public class AppRunner implements ApplicationRunner {
                             returnData1.setFanStatus("关");
                         }
                         returnData1.setAddTime(format.format(jsonBeen.getAddTime()));
+                        fanList.add(returnData1);
+                        map.put("fan",fanList);
                     }
-                    pageList.add(returnData1);
                     String isRead = s[1];
                     //根据 addTime,设备UUID 查询数据库是否已有该条数据
                     DeviceReturnData deviceReData = deviceReService.queryDeviceDataByAddTime(format.format(jsonBeen.getAddTime()),clientUuid);
@@ -185,7 +198,7 @@ public class AppRunner implements ApplicationRunner {
                 }
             }
 
-        return pageList;
+        return map;
     }
 
     /**
@@ -196,27 +209,40 @@ public class AppRunner implements ApplicationRunner {
         if (!StringUtils.isEmpty(deviceData)) {
             // 插入之前先删除所有设备信息。保持数据和远程一致
             deviceService.deleteDevicesAll();
-            JSONArray objects = JSON.parseArray(deviceData);
-            for (int i = 0; i < objects.size(); i++) {
-                Device device = new Device();
-                JSONObject object = (JSONObject) objects.get(i);
-                String typeName = object.getString("type_name");
-                String name = object.getString("name");
-                String zhaungtai = object.getString("zhaungtai");
-                String uuid = object.getString("uuid");
-                String remarks = object.getString("remarks");
-                device.setTypeName(typeName);
-                device.setDeviceName(name);
-                //设备状态(0：离线，1：在线)
-                if (!StringUtils.isEmpty(zhaungtai) && zhaungtai.equals("0")){
-                    device.setZhaungtai("离线");
-                }else {
-                    device.setZhaungtai("在线");
-                }
-                device.setUuid(uuid);
-                device.setRemarks(remarks);
-                deviceService.insertDevice(device);
-            }
+            List deviceList = getDeviceList(deviceData);
+            deviceService.bulkInsertDevice(deviceList);
         }
     }
+
+    /**
+     * 获取设备列表
+     * @param data
+     * @return
+     */
+    public List getDeviceList(String data){
+        List<Device> list = new ArrayList<>();
+        JSONArray objects = JSON.parseArray(data);
+        for (int i = 0; i < objects.size(); i++) {
+            Device device = new Device();
+            JSONObject object = (JSONObject) objects.get(i);
+            String typeName = object.getString("type_name");
+            String name = object.getString("name");
+            String zhaungtai = object.getString("zhaungtai");
+            String uuid = object.getString("uuid");
+            String remarks = object.getString("remarks");
+            device.setTypeName(typeName);
+            device.setDeviceName(name);
+            //设备状态(0：离线，1：在线)
+            if (!StringUtils.isEmpty(zhaungtai) && zhaungtai.equals("0")){
+                device.setZhaungtai("离线");
+            }else {
+                device.setZhaungtai("在线");
+            }
+            device.setUuid(uuid);
+            device.setRemarks(remarks);
+            list.add(device);
+        }
+        return list;
+    }
+
 }

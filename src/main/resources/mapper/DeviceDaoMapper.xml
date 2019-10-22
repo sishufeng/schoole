@@ -44,7 +44,7 @@
     <insert id="bulkInsertDevice" parameterType="com.leien.entity.Device">
         insert into device (uuid,device_name,remarks,type_name,zhaungtai)
         values
-          <foreach collection="deviceList" separator="," item="device">
+          <foreach collection="deviceList" open="(" separator="," close=")" item="device">
               (#{device.uuid},#{device.deviceName},#{device.remarks},#{device.typeName},#{device.zhaungtai}
         )
           </foreach>

@@ -44,7 +44,7 @@ public class APIUtil {
 
 
     /**
-     * 获取设备信息
+     * 获取设备列表
      * @param token
      * @return
      */
@@ -101,7 +101,7 @@ public class APIUtil {
     }
 
     /**
-     * 访问远程设备接口获取设备信息
+     * 访问远程设备接口获取设备返回数据
      * @param token
      * @return
      */

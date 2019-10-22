@@ -45,14 +45,4 @@ public class DeviceReturnDataServiceImpl implements DeviceReturnDataService {
     public DeviceReturnData queryDeviceDataByAddTime(String addTime,String uuid) {
         return returnDataDao.queryDeviceDataByAddTime(addTime,uuid);
     }
-
-    /**
-     * 更新风机状态(1：开，0：关)
-     * @param fanStatus
-     * @return
-     */
-    @Override
-    public int updateFanStatus(int fanStatus) {
-        return returnDataDao.updateFanStatus(fanStatus);
-    }
 }
