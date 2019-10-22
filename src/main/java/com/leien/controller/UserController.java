@@ -34,7 +34,7 @@ public class UserController {
         Map<String,Object> map = new HashMap<>();
         List<User> userEntities = userService.queryAllUser(user);
         map.put("code","0");
-        map.put("msg","");
+        map.put("msg","success");
         map.put("data",userEntities);
         map.put("count",userService.count());
         return map;

@@ -66,12 +66,13 @@ public class DeviceController {
      * 获取设备信息
      * @return
      */
-        @PostMapping("/getDeviceData")
+    @CrossOrigin
+    @PostMapping("/getDeviceData")
     public Map<String,Object> getDeviceData(){
         List list = appRunner.pageList;
         Map<String,Object> map = new HashMap<>();
         map.put("code","0");
-        map.put("msg","");
+        map.put("msg","success");
         map.put("data",list);
         return map;
     }
