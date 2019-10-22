@@ -46,6 +46,8 @@
 </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="../static/js/jquery.cookie.js"></script>
+
 <script type="text/javascript">
     layui.use(['form', 'layedit', 'laydate'], function(){
           var form = layui.form
@@ -58,6 +60,7 @@
     var pw;
     var heName01;
     var heName02;
+    var data;
      // 记住我
      function test() {
         ph=document.getElementById("phone").value;
@@ -81,7 +84,6 @@
             console.log(heName01);
             document.getElementById("phone").value=heName01;
             document.getElementById("pwd").value=heName02;
-            login();
         }
     }
     function login() {
@@ -105,13 +107,19 @@
             return false;
         }
         $.post('/user/login',{"phone":phone,"password":pwd},function (res) {
-            console.log(pwd);
+            var roleName=res.data.roleName;
             if(res.data != null){
                 if (pwd != res.data.passWord){
                     console.log(res.data.passWord);
                     return false;
                 }
-                window.location.href="/index";
+                if(roleName=="管理员"){
+                    window.location="yidongindex.html?a=管理员=";
+                }else if(roleName=="济南一中"){
+                    window.location="yidongindex.html?a=济南一中=";
+                }else {
+                    window.location="yidongindex.html?a=济南二中=";
+                }
             }else {
                 alert(res.nouser);
                 window.location.href="/login";

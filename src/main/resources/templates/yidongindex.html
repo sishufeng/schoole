@@ -13,7 +13,7 @@
   
   body {
     width: 7.5rem;
-    /* height: 6.4rem; */
+    height: 6.4rem;
 }
 </style>
 </head>
@@ -33,40 +33,32 @@
 </div> 
 <script src="../static/layui/layui.js" charset="utf-8"></script>
 <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script src="../static/js/jquery.cookie.js"></script>
 <!-- 注意：如果你直接复制所有代码到本地，上述js路径需要改成你本地的 -->
-
 <script th:inline="javascript">
-      // 权限验证
-      $(function(){
-         //--获取session中的值
-    /*<![CDATA[*/
-    var xx=/*[[${session.user}]]*/   --获取session中的值
-    // console.log(xx);
-    /*]]>*/ 
-    var roleName=xx.roleName;
-    // console.log(xx.roleName);
-	if(roleName=="管理员"){
-        document.getElementById("jinanOne").style.display="";
-        document.getElementById("jinanTwo").style.display="";
-    }else if(roleName=="济南一中"){
-        document.getElementById("jinanOne").style.display="";
-    }else{
-        document.getElementById("jinanTwo").style.display="";
-        document.getElementById('jinanTwo').className += 'layui-this';
-    }
-    })
-  
+      var roleName;
     layui.use('table', function(){
       var table = layui.table;
       var $ = layer.$;
-     
+       // 权限验证
+      roleName = UrlParm.parm("a"); 
+      alert(roleName);
+      if(roleName=="管理员"){
+        document.getElementById("jinanOne").style.display="";
+            document.getElementById("jinanTwo").style.display="";
+        }else if(roleName=="济南一中"){
+            document.getElementById("jinanOne").style.display="";
+        }else{
+            document.getElementById("jinanTwo").style.display="";
+            document.getElementById('jinanTwo').className += 'layui-this';
+      }
       // <!-- 济南一中 -->
       table.render({
            elem: '#testone'
           , method : 'POST'
           ,contentType: 'application/json'
           ,url:'/device/getDeviceData'
-        // ,url:'http://192.168.0.166:8899/user/queryList'
+        // ,url:'http://192.168.0.166:8080/user/queryList'
         ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
         ,cols: [
           [
@@ -117,7 +109,7 @@
           , method : 'POST'
           ,contentType: 'application/json'
           ,url:'/device/getDeviceData'
-        // ,url:'http://192.168.0.166:8899/user/queryList'
+        // ,url:'http://192.168.0.166:8080/user/queryList'
         ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
         ,cols: [
           [
