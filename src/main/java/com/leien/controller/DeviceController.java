@@ -118,6 +118,7 @@ public class DeviceController {
                 temperatureControlData.setBeiErTemperature(data.getBeiErTemperature());
                 temperatureControlData.setValveStatus(data.getValveStatus());
                 temperatureControlData.setZhuangtaiName(data.getZhuangtaiName());
+                temperatureControlData.setValveStatus("0");
                 temperatureControlDataList.add(temperatureControlData);
             }else {
                 fanControlData.setName(data.getName());
