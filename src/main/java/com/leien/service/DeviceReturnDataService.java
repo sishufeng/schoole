@@ -36,4 +36,10 @@ public interface DeviceReturnDataService {
      */
     DeviceReturnData queryDeviceDataByAddTime(String addTime,String uuid);
 
+    /**
+     * 更新风机状态(1：开，0：关)
+     * @param fanStatus
+     * @return
+     */
+//    int updateFanStatus(int fanStatus);
 }

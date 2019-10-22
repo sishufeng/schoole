@@ -1,25 +1,40 @@
-(function(doc, win) {
-    var docEl = doc.documentElement,
-        isIOS = navigator.userAgent.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/),
-        dpr = isIOS ? Math.min(win.devicePixelRatio, 3) : 1,
-        dpr = window.top === window.self ? dpr : 1, //被iframe引用时，禁止缩放
-        dpr = 1,
-        scale = 1 / dpr,
-        resizeEvt = 'orientationchange' in window ? 'orientationchange' : 'resize';
-    docEl.dataset.dpr = dpr;
-    var metaEl = doc.createElement('meta');
-    metaEl.name = 'viewport';
-    metaEl.content = 'initial-scale=' + scale + ',maximum-scale=' + scale + ', minimum-scale=' + scale;
-    docEl.firstElementChild.appendChild(metaEl);
-    var recalc = function() {
-        var width = docEl.clientWidth;
-        if (width / dpr > 750) {
-            width = 750 * dpr;
+UrlParm = function() { // url参数
+    // 登录验证接口
+    // var loginInterface='http://192.168.0.166:8080/user/login';
+    // 济南一中--温控器接口
+    var oneWen='http://192.168.0.166:8080/device/getDeviceData';
+    // 济南一中--风机
+    var oneFeng='http://192.168.0.166:8080/device/getDeviceData';
+    // 济南二中--温控器接口
+    var SecondEen='http://192.168.0.166:8080/device/getDeviceData';
+    // 济南二中--风机接口
+    var SecondFeng='http://192.168.0.166:8080/device/getDeviceData';
+    return {
+        // 登录验证接口
+        parm : function() { // o: 参数名或者参数次序
+            try {
+                return loginInterface='http://192.168.0.166:8080/user/login';
+            } catch (e) {
+            }
+        },
+        //获得参数组, 类似request.getParameterValues()
+        parmValues : function(o) { //  o: 参数名或者参数次序
+            try {
+                return (typeof(o) == 'number' ? data[o] : data[index[o]]);
+            } catch (e) {}
+        },
+        //是否含有parmName参数
+        hasParm : function(parmName) {
+            return typeof(parmName) == 'string' ? typeof(index[parmName]) != 'undefined' : false;
+        },
+        // 获得参数Map ,类似request.getParameterMap()
+        parmMap : function() {
+            var map = {};
+            try {
+                for (var p in index) {  map[p] = data[index[p]];  }
+            } catch (e) {}
+            return map;
         }
-        // 乘以100，px : rem = 100 : 1
-        docEl.style.fontSize = 100 * (width / 750) + 'px';
-    };
-    recalc()
-    if (!doc.addEventListener) return;
-    win.addEventListener(resizeEvt, recalc, false);
-})(document, window);
+    }
+}(document, window);
+  
