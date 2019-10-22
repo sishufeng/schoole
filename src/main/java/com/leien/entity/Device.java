@@ -49,11 +49,6 @@ public class Device {
     private double  reWaterTemperature;
 
     /**
-     * 设备湿度
-     */
-    private double  deviceHumidity;
-
-    /**
      * 备一温度
      */
     private double  beiYiTemperature;
@@ -82,10 +77,4 @@ public class Device {
      * 设备说明
      */
     private String remarks;
-
-    /**
-     * 设备所属学校
-     */
-    private String affiliatedSchool;
-
 }

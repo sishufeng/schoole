@@ -112,11 +112,6 @@ public class AppRunner implements ApplicationRunner {
                 deviceListMap.put("fanControl",fanList);
             }else {
                 returnData1.setZhuangtaiName("离线");
-                returnData1.setInletTemperature(0.0);
-                returnData1.setReWaterTemperature(0.0);
-                returnData1.setBeiYiTemperature(0.0);
-                returnData1.setBeiErTemperature(0.0);
-                returnData1.setValveStatus(String.valueOf(0));
                 pageList.add(returnData1);
                 deviceListMap.put("offLine",pageList);
             }
