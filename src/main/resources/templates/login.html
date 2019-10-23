@@ -113,13 +113,14 @@
                     console.log(res.data.passWord);
                     return false;
                 }
-                if(roleName=="管理员"){
-                    window.location="yidongindex.html?a=管理员=";
-                }else if(roleName=="济南一中"){
-                    window.location="yidongindex.html?a=济南一中=";
-                }else {
-                    window.location="yidongindex.html?a=济南二中=";
-                }
+                window.location.href="/index";
+                // if(roleName=="管理员"){
+                //     window.location="yidongindex.html?a=管理员=";
+                // }else if(roleName=="济南一中"){
+                //     window.location="yidongindex.html?a=济南一中=";
+                // }else {
+                //     window.location="yidongindex.html?a=济南二中=";
+                // }
             }else {
                 alert(res.nouser);
                 window.location.href="/login";
