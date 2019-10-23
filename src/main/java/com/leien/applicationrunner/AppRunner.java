@@ -240,6 +240,8 @@ public class AppRunner implements ApplicationRunner {
             String zhaungtai = object.getString("zhaungtai");
             String uuid = object.getString("uuid");
             String remarks = object.getString("remarks");
+            String deviceType = object.getString("type_id");
+            device.setDeviceTypes(Integer.valueOf(deviceType));
             device.setTypeName(typeName);
             device.setDeviceName(name);
             //设备状态(0：离线，1：在线)

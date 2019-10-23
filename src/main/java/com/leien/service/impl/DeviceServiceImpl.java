@@ -49,7 +49,7 @@ public class DeviceServiceImpl implements DeviceService {
      * @return
      */
     @Override
-    public List<Device> queryDevicesByUuids(String deviceUUID) {
+    public Device queryDevicesByUuids(String deviceUUID) {
 
         return deviceDao.queryDevicesByUuids(deviceUUID);
     }

@@ -69,5 +69,5 @@ public interface DeviceDao {
      * @param deviceUUID
      * @return
      */
-    List<Device> queryDevicesByUuids(String deviceUUID);
+    Device queryDevicesByUuids(String deviceUUID);
 }

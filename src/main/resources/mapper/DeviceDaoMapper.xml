@@ -8,6 +8,7 @@
         <result column="zhaungtai" property="zhaungtai" jdbcType="INTEGER"/>
         <result column="device_zhuangtai_name" property="deviceZhuangTaiName" jdbcType="VARCHAR"/>
         <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
+        <result column="device_types" property="deviceTypes" jdbcType="INTEGER"/>
 
         <result column="device_type" property="deviceType" jdbcType="INTEGER"/>
         <result column="valve_status" property="valveStatus" jdbcType="INTEGER"/>
@@ -57,9 +58,9 @@
                  LIMIT 2
     </select>
 
-    <!-- 查询设备是否存在 -->
-    <select id="queryDevicesByUuids" parameterType="String" resultType="com.leien.entity.Device">
-        select * from device where uuid=#{deviceUUID}
+    <!-- 查询不在线设备，并且在返回数据表中没有数据 -->
+    <select id="queryDevicesByUuids" parameterType="String" resultMap="deviceMap">
+        select device_name,type_name,remarks,device_zhuangtai_name,device_types from device where uuid=#{deviceUUID}
     </select>
 
     <!-- 单条插入 -->
@@ -70,10 +71,10 @@
 
     <!-- 批量插入设备信息 -->
     <insert id="bulkInsertDevice">
-        insert into device (uuid,device_name,remarks,type_name,zhaungtai,device_zhuangtai_name)
+        insert into device (uuid,device_name,remarks,type_name,zhaungtai,device_zhuangtai_name,device_types)
         values
           <foreach collection="deviceList"  separator=","  item="device">
-              (#{device.uuid},#{device.deviceName},#{device.remarks},#{device.typeName},#{device.zhaungtai},#{device.deviceZhuangTaiName}
+              (#{device.uuid},#{device.deviceName},#{device.remarks},#{device.typeName},#{device.zhaungtai},#{device.deviceZhuangTaiName},#{device.deviceTypes}
         )
           </foreach>
     </insert>

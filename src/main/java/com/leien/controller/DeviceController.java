@@ -55,8 +55,12 @@ public class DeviceController {
             //获取离线温控设备信息
             Map<String, List> temperatureControlMap = offLineDevices(deviceData);
             if(temperatureControlMap != null && !temperatureControlMap.isEmpty()){
-                List temperatureControlDataOffLineList = temperatureControlMap.get("offLineDeviceData");
+                //离线的温控设备
+                List temperatureControlDataOffLineList = temperatureControlMap.get("temperatureControlData");
+                //没有返回数据的离线的温控设备
+                List temperatureControlDataOffLine = temperatureControlMap.get("offLineTemperatureControlData");
                 map.put("offLineTemperatureControlData",temperatureControlDataOffLineList);
+                map.put("offLineTemperatureControlNotData",temperatureControlDataOffLine);
             }
         }else {
             //远程接口服务故障时获取本地数据返回页面展示
@@ -88,8 +92,12 @@ public class DeviceController {
             //获取离线风机设备信息
             Map<String, List> fanControlMap = offLineDevices(deviceData);
             if(fanControlMap != null && !fanControlMap.isEmpty()){
-                List fanControlDataOffLineList = fanControlMap.get("offLineDeviceData");
+                //有返回数据的风机设备
+                List fanControlDataOffLineList = fanControlMap.get("fanControlData");
+                //没有返回数据的风机设备
+                List fanControlDataOffLine = fanControlMap.get("offLineFanControlData");
                 map.put("offLineFanControlData",fanControlDataOffLineList);
+                map.put("notReturnDataFan",fanControlDataOffLine);
             }
         }else {
             //远程接口服务故障时获取本地数据返回页面展示
@@ -130,11 +138,13 @@ public class DeviceController {
      */
     protected Map<String,List> offLineDevices(Map<String, List> deviceData){
         Map<String,List> map = new HashMap<>();
+        List<Device> list = new ArrayList();
         List<Device> temperatureControlDataList = new ArrayList<>();
         List<Device> fanControlDataList = new ArrayList<>();
-        List<Device> offLineDeviceList = new ArrayList<>();
+        Device offLineDevice;
         List<Device> offLineDevices = deviceData.get("offLine");
         for (DeviceReturnData data : offLineDevices){
+            offLineDevice = new Device();
             //设备id
             String deviceUuid = data.getUuid();
             Device device = deviceService.queryDeviceByUuidDesc(deviceUuid);
@@ -147,18 +157,29 @@ public class DeviceController {
                     fanControlDataList.add(device);
                 }
             }else {
-                offLineDeviceList = deviceService.queryDevicesByUuids(deviceUuid);
-               /* for(Device device1 :offLineDeviceList){
-                    String typeName = device1.getTypeName();
-                    if(""typeName){
-
-                    }
-                }*/
+                offLineDevice = deviceService.queryDevicesByUuids(deviceUuid);
+                list.add(offLineDevice);
             }
         }
-
-        map.put("offLineDeviceData",offLineDeviceList);
+        List temperatureControl = new ArrayList();
+        List fanControlList = new ArrayList();
+        for(Device device : list){
+            // 8：风机， 7：温控
+            if(device.getDeviceTypes() == 8){
+                //风机离线设备
+                fanControlList.add(device);
+            }else {
+                //温控离线设备
+                temperatureControl.add(device);
+            }
+        }
+        //温控离线设备(再返回数据库中没有数据)
+        map.put("offLineTemperatureControlData",temperatureControl);
+        //风机离线设备(再返回数据库中没有数据)
+        map.put("offLineFanControlData",fanControlList);
+        //温控离线设备(再返回数据库中有数据)
         map.put("temperatureControlData",temperatureControlDataList);
+        //风机离线设备(再返回数据库中有数据)
         map.put("fanControlData",fanControlDataList);
         return map;
     }

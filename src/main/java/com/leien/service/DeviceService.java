@@ -29,7 +29,7 @@ public interface DeviceService {
      * @param deviceUUID
      * @return
      */
-    List<Device> queryDevicesByUuids(String deviceUUID);
+    Device queryDevicesByUuids(String deviceUUID);
 
     /**
      * 批量插入设备信息
