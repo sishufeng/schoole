@@ -9,14 +9,6 @@
 <link rel="stylesheet" type="text/css" href="../static/css/schooleOne.css" />
 <!-- <link rel="stylesheet" href="//res.layui.com/layui/dist/css/layui.css"  media="all"> -->
 <title>login</title>
-<style>
-	#ceshi{
-		color:lightpink;
-		/* width: 100px;
-		height: 100px;
-		background: url(../static/img/oo.png) no-repeat; */
-	}
-</style>
 </head>
 <body>
 <section class="hero">
@@ -35,9 +27,9 @@
 <script type="text/javascript">
 	layui.use('laytpl', function(){
 		var laytpl = layui.laytpl;	
-		var t1 = window.setInterval(function(){repeat();repeatfeng();},1000);
-		// repeat();
-		// repeatfeng();
+		repeat();
+		repeatfeng();
+		var t1 = window.setInterval(function(){repeat();repeatfeng();},3000);
 		}); 
 	// 设置定时器
 	function repeat(){
@@ -58,8 +50,6 @@
 			}); 
 	        })
 	}
-	//去掉定时器的方法 
-	// window.clearInterval(t1)
 </script>
 <!--：风机 data-->
 <script type="text/javascript">
@@ -81,8 +71,6 @@
 			}); 
 	        })
 	}
-	//去掉定时器的方法 
-	// window.clearInterval(t1)
 </script>
 <!-- //温控器模板 -->
 <script id="wenkong" type="text/html">
@@ -92,7 +80,7 @@
 	<div id="views">
 		<div class="zuotop">{{ item.name }}</div>
 		<div class="zuo">
-			<div class="zuoimg"><img src="../static/img/oo.png" alt=""></div>
+			<div class="zuoimg"><img src="../static/img/wenkongqi.png" alt=""></div>
 			<div class="zuodata">
 				<ul>
 					<li>阀门状态:{{ item.valveStatus }}</li>
@@ -123,7 +111,7 @@
 	<div id="fengZong">
 		<div class="fengtop">{{ item.name }}</div>
 		<div class="fengzuo">
-			<div class="fengzuoimg"><img src="../static/img/demo-1-bg.jpg" alt=""></div>
+			<div class="fengzuoimg"><img src="../static/img/fengji.png" alt=""></div>
 			<div class="fengzuodata">
 				<ul>
 					<li>设备状态:{{ item.zhuangtaiName }}</li>
