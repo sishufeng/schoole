@@ -12,7 +12,7 @@ import java.util.Date;
  * @Description:设备实体类
  */
 @Data
-public class Device {
+public class Device extends DeviceReturnData{
 
     /**
      * 主键
@@ -20,43 +20,10 @@ public class Device {
     private String uuid;
 
     /**
-     * 设备类型(0=温控器，1=风机)
-     */
-    private String deviceType;
-    /**
      * 设备类型名称
      */
     private String typeName;
 
-    /**
-     * 阀门状态(0：关，1：开)
-     */
-    private String valveStatus;
-
-    /**
-     * 设备状态(0：关，1：开)
-     */
-    private String deviceStatus;
-
-    /**
-     * 进水温度
-     */
-    private double  inletTemperature;
-
-    /**
-     * 回水温度
-     */
-    private double  reWaterTemperature;
-
-    /**
-     * 备一温度
-     */
-    private double  beiYiTemperature;
-
-    /**
-     * 备二温度
-     */
-    private double  beiErTemperature;
 
     /**
      * 设备创建时间
@@ -69,12 +36,18 @@ public class Device {
      */
     private String  deviceName;
     /**
-     * 设备状态(0：在线，1：不在线)
+     * 设备状态(0：离线，1：在线)
      */
-    private String zhaungtai;
+    private Integer zhaungtai;
+
+    /**
+     * 设备状态名称
+     */
+    private String deviceZhuangTaiName;
 
     /**
      * 设备说明
      */
     private String remarks;
+
 }

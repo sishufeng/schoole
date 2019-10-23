@@ -15,7 +15,7 @@ public class DeviceReturnData {
     /**
      * 设备类型(0=温控器，1=风机)
      */
-    private String deviceType;
+    private Integer deviceType;
     /**
      * 进水温度
      */
@@ -27,7 +27,7 @@ public class DeviceReturnData {
     /**
      * 阀门状态(0：关，1：开)
      */
-    private String valveStatus;
+    private Integer valveStatus;
 
     /**
      * 备一温度
@@ -52,18 +52,27 @@ public class DeviceReturnData {
     private String name;
 
     /**
-     * 设备状态(0：在线，1：离线)
+     * 风机状态(1：开，0：关)
      */
-    private Integer zhaungtai;
+    private Integer fanStatus;
 
     /**
-     * 设备状态名称
+     * 设备UUID
      */
-    private String zhuangtaiName;
+    private String uuid;
 
+    /**
+     * 设备类型名称(0=温控器，1=风机)
+     */
+    private String deviceTypeName;
+
+    /**
+     * 阀门状态名称(0：关，1：开)
+     */
+    private String valveStatusName;
     /**
      * 风机状态(1：开，0：关)
      */
-    private String fanStatus;
+    private String fanStatusName;
 
 }

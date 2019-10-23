@@ -4,14 +4,17 @@
     <resultMap id="deviceReturnDataMap" type="com.leien.entity.DeviceReturnData">
         <result column="id" property="id" jdbcType="VARCHAR"/>
         <result column="device_uuid" property="deviceUuid" jdbcType="VARCHAR"/>
-        <result column="device_type" property="deviceType" jdbcType="VARCHAR"/>
-        <result column="fan_status" property="fanStatus" jdbcType="VARCHAR"></result>
-        <result column="valve_status" property="valveStatus" jdbcType="VARCHAR"/>
+        <result column="device_type" property="deviceType" jdbcType="INTEGER"/>
+        <result column="fan_status" property="fanStatus" jdbcType="INTEGER"/>
+        <result column="valve_status" property="valveStatus" jdbcType="INTEGER"/>
         <result column="inlet_temperature" property="inletTemperature" />
         <result column="rewater_temperature" property="reWaterTemperature" />
         <result column="beiyi_temperature" property="beiYiTemperature" />
         <result column="beier_temperature" property="beiErTemperature" />
         <result column="add_time" property="addTime" jdbcType="VARCHAR"/>
+        <result column="device_type_name" property="deviceTypeName" jdbcType="VARCHAR"/>
+        <result column="valve_status_name" property="valveStatusName" jdbcType="VARCHAR"/>
+        <result column="fan_status_name" property="fanStatusName" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List" >
@@ -24,11 +27,11 @@
     <insert id="insertDeviceReData" parameterType="com.leien.entity.DeviceReturnData">
         insert into device_return_data
         (id,device_type,inlet_temperature,rewater_temperature,beiyi_temperature,
-         beier_temperature,valve_status,add_time,device_uuid,fan_status)
+         beier_temperature,valve_status,add_time,device_uuid,fan_status,device_type_name,valve_status_name,fan_status_name)
         values
         (#{id},#{deviceType},#{inletTemperature},#{reWaterTemperature},
          #{beiYiTemperature},#{beiErTemperature},#{valveStatus},#{addTime},
-         #{deviceUuid},#{fanStatus})
+         #{deviceUuid},#{fanStatus},#{deviceTypeName},#{valveStatusName},#{fanStatusName})
 
     </insert>
 

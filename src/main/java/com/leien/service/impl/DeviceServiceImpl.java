@@ -44,13 +44,14 @@ public class DeviceServiceImpl implements DeviceService {
     }
 
     /**
-     * 根据uuid查询设备是否存在
+     * 如果设备离线根据设备UUID查询设备信息
      * @param deviceUUID
      * @return
      */
     @Override
-    public int queryDeviceIsExistByUuid(String deviceUUID) {
-        return deviceDao.queryDeviceIsExistByUuid(deviceUUID);
+    public List<Device> queryDevicesByUuids(String deviceUUID) {
+
+        return deviceDao.queryDevicesByUuids(deviceUUID);
     }
 
     /**
@@ -101,5 +102,24 @@ public class DeviceServiceImpl implements DeviceService {
     @Override
     public int deleteDevicesAll() {
         return deviceDao.deleteDevicesAll();
+    }
+
+    /**
+     * 根据设备UUID查询设备信息(设备不在线时)
+     * @param deviceUuid
+     * @return
+     */
+    @Override
+    public Device queryDeviceByUuidDesc(String deviceUuid) {
+        return deviceDao.queryDeviceByUuidDesc(deviceUuid);
+    }
+
+    /**
+     * 远程接口服务故障时，查询本地数据页面展示
+     * @return
+     */
+    @Override
+    public Device queryDevicesForServiceFailure() {
+        return deviceDao.queryDevicesForServiceFailure();
     }
 }

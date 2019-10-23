@@ -2,7 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.leien.dao.DeviceDao" >
     <resultMap id="deviceMap" type="com.leien.entity.Device">
-        <result column="device_uuid" property="deviceUUID" jdbcType="VARCHAR"/>
+        <result column="uuid" property="uuid" jdbcType="VARCHAR"/>
+        <result column="type_name" property="typeName" />
+        <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
+        <result column="zhaungtai" property="zhaungtai" jdbcType="INTEGER"/>
+        <result column="device_zhuangtai_name" property="deviceZhuangTaiName" jdbcType="VARCHAR"/>
+        <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
+
         <result column="device_type" property="deviceType" jdbcType="INTEGER"/>
         <result column="valve_status" property="valveStatus" jdbcType="INTEGER"/>
         <result column="inlet_temperature" property="inletTemperature" />
@@ -10,28 +16,50 @@
         <result column="device_humidity" property="deviceHumidity" />
         <result column="beiyi_temperature" property="beiYiTemperature" />
         <result column="beier_temperature" property="beiErTemperature" />
-        <result column="create_time" property="createTime" jdbcType="DATE"/>
-        <result column="device_name" property="deviceName" jdbcType="VARCHAR"/>
-        <result column="device_remark" property="deviceRemark" jdbcType="VARCHAR"/>
-        <result column="device_status" property="deviceStatus" jdbcType="INTEGER"/>
-    <result column="affiliated_school" property="affiliatedSchool" jdbcType="VARCHAR"/>
-</resultMap>
+        <result column="add_time" property="addTime" jdbcType="VARCHAR"/>
+        <result column="device_type_name" property="deviceTypeName" jdbcType="VARCHAR"/>
+        <result column="valve_status_name" property="valveStatusName" jdbcType="VARCHAR"/>
+        <result column="fan_status_name" property="fanStatusName" jdbcType="VARCHAR"/>
+    </resultMap>
     <!-- 查询所有设备 -->
     <select id="findAll" resultMap="deviceMap">
         SELECT * FROM device
     </select>
 
     <!-- 查询当前设备信息-->
-    <select id="queryDeviceByUuid" resultType="List">
+    <select id="queryDevicesByUuid" resultType="List">
         select *  from device where uuid in
             <foreach item="item"  collection="list" open="(" separator="," close=")">
                         #{item}
             </foreach>
     </select>
 
+    <!-- 设备不在线时查询设备信息返回页面展示 -->
+    <select id="queryDeviceByUuidDesc" resultMap="deviceMap" parameterType="String">
+        select d.device_name,d.type_name,d.device_zhuangtai_name,drd.device_type,drd.device_type_name,drd.inlet_temperature,
+               drd.fan_status_name,drd.rewater_temperature,drd.beiyi_temperature,drd.beier_temperature,
+               drd.valve_status_name,drd.add_time
+        from device d
+                 RIGHT JOIN device_return_data drd ON d.uuid = drd.device_uuid
+        where d.uuid =#{deviceUUID}
+        ORDER BY drd.add_time desc
+        LIMIT 1
+    </select>
+
+    <!-- 远程服务故障时查询设备信息返回页面展示, LIMIT 2 :根据设备类型自定义配置-->
+    <select id="queryDevicesForServiceFailure" resultMap="deviceMap">
+        select d.device_name,d.type_name,d.device_zhuangtai_name,drd.device_type,drd.device_type_name,drd.inlet_temperature,
+               drd.fan_status_name,drd.rewater_temperature,drd.beiyi_temperature,drd.beier_temperature,
+               drd.valve_status_name,drd.add_time
+        from device d
+                 RIGHT JOIN device_return_data drd ON d.uuid = drd.device_uuid
+        ORDER BY drd.add_time desc
+                 LIMIT 2
+    </select>
+
     <!-- 查询设备是否存在 -->
-    <select id="queryDeviceIsExistByUuid" parameterType="String" resultType="int">
-        select count(uuid) from device where uuid=#{deviceUUID}
+    <select id="queryDevicesByUuids" parameterType="String" resultType="com.leien.entity.Device">
+        select * from device where uuid=#{deviceUUID}
     </select>
 
     <!-- 单条插入 -->
@@ -41,11 +69,11 @@
     </insert>
 
     <!-- 批量插入设备信息 -->
-    <insert id="bulkInsertDevice" parameterType="com.leien.entity.Device">
-        insert into device (uuid,device_name,remarks,type_name,zhaungtai)
+    <insert id="bulkInsertDevice">
+        insert into device (uuid,device_name,remarks,type_name,zhaungtai,device_zhuangtai_name)
         values
           <foreach collection="deviceList"  separator=","  item="device">
-              (#{device.uuid},#{device.deviceName},#{device.remarks},#{device.typeName},#{device.zhaungtai}
+              (#{device.uuid},#{device.deviceName},#{device.remarks},#{device.typeName},#{device.zhaungtai},#{device.deviceZhuangTaiName}
         )
           </foreach>
     </insert>

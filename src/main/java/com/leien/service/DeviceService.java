@@ -25,11 +25,11 @@ public interface DeviceService {
      */
     List<String> queryDeviceByUuid(@Param("list") List<String> uuidList);
     /**
-     * 根据设备UUID查询设备是否存在
+     * 如果设备离线根据设备UUID查询设备信息
      * @param deviceUUID
      * @return
      */
-    int queryDeviceIsExistByUuid(String deviceUUID);
+    List<Device> queryDevicesByUuids(String deviceUUID);
 
     /**
      * 批量插入设备信息
@@ -56,4 +56,18 @@ public interface DeviceService {
      * @return
      */
     int deleteDevicesAll();
+
+    /**
+     * 根据设备UUID查询设备信息(当服务不在线时)
+     * @param deviceUuid
+     * @return
+     */
+    Device queryDeviceByUuidDesc(String deviceUuid);
+
+    /**
+     * 远程接口服务故障时，查询本地数据页面展示
+     * @return
+     */
+    Device queryDevicesForServiceFailure();
+
 }

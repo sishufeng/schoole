@@ -26,13 +26,6 @@ public interface DeviceDao {
     List<String> queryDeviceByUuid(List<String> uuidList);
 
     /**
-     * 根据设备UUID查询设备是否存在
-     * @param deviceUUID
-     * @return
-     */
-    int queryDeviceIsExistByUuid(String deviceUUID);
-
-    /**
      * 批量插入设备信息
      * @param deviceList
      * @return
@@ -57,4 +50,24 @@ public interface DeviceDao {
      * @return
      */
     int deleteDevicesAll();
+
+    /**
+     * 根据设备UUID查询设备信息(当服务崩溃时)
+     * @param deviceUUID
+     * @return
+     */
+    Device queryDeviceByUuidDesc(String deviceUUID);
+
+    /**
+     * 远程接口服务故障时，查询本地数据页面展示
+     * @return
+     */
+    Device queryDevicesForServiceFailure();
+
+    /**
+     * 如果设备离线根据设备UUID查询设备信息
+     * @param deviceUUID
+     * @return
+     */
+    List<Device> queryDevicesByUuids(String deviceUUID);
 }

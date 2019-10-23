@@ -12,6 +12,8 @@ import com.leien.utils.APIUtil;
 import com.leien.utils.HexUtils;
 import com.leien.utils.UUIDUtils;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
@@ -38,6 +40,8 @@ import java.util.concurrent.TimeUnit;
 @Component
 @Order(value = 1)
 public class AppRunner implements ApplicationRunner {
+
+    private final static Logger logger = LoggerFactory.getLogger(AppRunner.class);
 
     public String token ;
     /**
@@ -70,17 +74,22 @@ public class AppRunner implements ApplicationRunner {
         if (StringUtils.isEmpty(token)){
             token = apiUtil.getToken();
         }
+        //获取远程设备信息
+        String deviceInformation = apiUtil.getDeviceInformation(token);
+
+        if(deviceInformation != null && !StringUtils.isEmpty(deviceInformation)){
+            //保存到数据库
+            insertDevice(deviceInformation);
+        }
         ScheduledExecutorService scheduledExecutorService = new ScheduledThreadPoolExecutor(1,
                 new BasicThreadFactory.Builder().namingPattern("example-schedule-pool-%d").daemon(true).build());
         scheduledExecutorService.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
-                //获取远程设备信息
-                String deviceInformation = apiUtil.getDeviceInformation(token);
-                List<DeviceReturnData> deviceReDataList = JSON.parseArray(deviceInformation, DeviceReturnData.class);
+                String devices = apiUtil.getDeviceInformation(token);
+                List<Device> deviceReDataList = JSON.parseArray(devices, Device.class);
                 deviceData = getDeviceData(deviceReDataList);
-                //保存到数据库
-                insertDevice(deviceInformation);
+                logger.info("执行定时任务");
             }
         }, 1000, 10000, TimeUnit.MILLISECONDS);
     }
@@ -91,18 +100,18 @@ public class AppRunner implements ApplicationRunner {
      * @param list
      * @return
      */
-    public Map<String, List> getDeviceData(List<DeviceReturnData> list){
+    public Map<String, List> getDeviceData(List<Device> list){
         List pageList = new ArrayList();
         Map<String, List> deviceListMap = new HashMap<>();
-        DeviceReturnData returnData1;
-        for(DeviceReturnData deviceReturnData : list){
-            returnData1 = new DeviceReturnData();
-            returnData1.setName(deviceReturnData.getName());
+        Device returnData1;
+        for(Device device : list){
+            returnData1 = new Device();
+            returnData1.setName(device.getName());
             //设备状态(0：离线，1：在线)
-            int deviceSta = deviceReturnData.getZhaungtai();
+            int deviceSta = device.getZhaungtai();
             returnData1.setZhaungtai(deviceSta);
             if (deviceSta == 1){
-                returnData1.setZhuangtaiName("在线");
+                returnData1.setDeviceZhuangTaiName("在线");
                 deviceListMap = onLineDevice(returnData1);
                 //温控在线设备
                 List deviceList = deviceListMap.get("device");
@@ -111,7 +120,8 @@ public class AppRunner implements ApplicationRunner {
                 List fanList = deviceListMap.get("fan");
                 deviceListMap.put("fanControl",fanList);
             }else {
-                returnData1.setZhuangtaiName("离线");
+                returnData1.setDeviceZhuangTaiName("离线");
+                returnData1.setUuid(device.getUuid());
                 pageList.add(returnData1);
                 deviceListMap.put("offLine",pageList);
             }
@@ -126,7 +136,7 @@ public class AppRunner implements ApplicationRunner {
         List deviceList = new ArrayList();
         List fanList = new ArrayList();
         Map<String,List> map = new HashMap<>();
-//        List<DeviceReturnData> deviceReturnDataList = new ArrayList<>();
+        DeviceReturnData deviceReturnData;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String returnData = apiUtil.getData(token);
             JSONObject jsonObject = JSON.parseObject(returnData);
@@ -135,6 +145,7 @@ public class AppRunner implements ApplicationRunner {
             // 如果deviceData.size()>0时所有设备都在线,解析设备信息
             if(deviceData.size()>0){
                 for (JsonRootBean jsonBeen : deviceData){
+                    returnData1 = new DeviceReturnData();
                     String msg = jsonBeen.getMsg();
                     String clientUuid = jsonBeen.getClientUuid();
                     String[] s = HexUtils.subStringData(msg);
@@ -144,13 +155,16 @@ public class AppRunner implements ApplicationRunner {
                     int deviceStatus = Integer.parseInt(s[3] + s[4],16);
                     // 温控解析
                     if(deviceStatus == 0){
-                        returnData1.setDeviceType("温控器");
+                        returnData1.setDeviceTypeName("温控器");
+                        returnData1.setDeviceType(deviceStatus);
                         // 设备阀门状态(0：关，1：开)
                         int valveSta = Integer.parseInt(s[15] + s[16],16);
                         if(valveSta == 1){
-                            returnData1.setValveStatus("开");
+                            returnData1.setValveStatus(valveSta);
+                            returnData1.setValveStatusName("开");
                         }else {
-                            returnData1.setValveStatus("关");
+                            returnData1.setValveStatus(valveSta);
+                            returnData1.setValveStatusName("关");
                         }
                         //冷水温度
                         returnData1.setInletTemperature(Long.parseLong(s[17] + s[18],16));
@@ -165,15 +179,18 @@ public class AppRunner implements ApplicationRunner {
                         map.put("device",deviceList);
                     }else {
                         //风机解析
-                        returnData1.setDeviceType("风机");
+                        returnData1.setDeviceTypeName("风机");
+                        returnData1.setDeviceType(deviceStatus);
                         //设备工作类型  0=温控器，1=风机
                         int deviceSta = Integer.parseInt(s[3] + s[4],16);
                         // 风机状态(1：开，0：关)
                         int fanStatus = Integer.parseInt(s[15] + s[16],16);
                         if(fanStatus == 1){
-                            returnData1.setFanStatus("开");
+                            returnData1.setFanStatus(fanStatus);
+                            returnData1.setFanStatusName("开");
                         }else {
-                            returnData1.setFanStatus("关");
+                            returnData1.setFanStatus(fanStatus);
+                            returnData1.setFanStatusName("关");
                         }
                         returnData1.setAddTime(format.format(jsonBeen.getAddTime()));
                         fanList.add(returnData1);
@@ -185,11 +202,7 @@ public class AppRunner implements ApplicationRunner {
                     // 返回数据第三位代表操作类型，03：读取，06：操作。并且时间不同再往数据库保存
                     if (isRead.equals("03") && deviceReData == null){
                         deviceReService.insertDeviceReData(returnData1);
-//                        deviceReturnDataList.add(returnData1);
                     }
-//                    if(deviceReturnDataList.size() % 2 == 0){
-//                        deviceReService.bulkInsertDevice(deviceReturnDataList);
-//                    }
                 }
             }
 
@@ -230,10 +243,12 @@ public class AppRunner implements ApplicationRunner {
             device.setTypeName(typeName);
             device.setDeviceName(name);
             //设备状态(0：离线，1：在线)
-            if (!StringUtils.isEmpty(zhaungtai) && zhaungtai.equals("0")){
-                device.setZhaungtai("离线");
+            if (!StringUtils.isEmpty(zhaungtai) && "0".equals(zhaungtai)){
+                device.setZhaungtai(Integer.valueOf(zhaungtai));
+                device.setDeviceZhuangTaiName("离线");
             }else {
-                device.setZhaungtai("在线");
+                device.setZhaungtai(Integer.valueOf(zhaungtai));
+                device.setDeviceZhuangTaiName("在线");
             }
             device.setUuid(uuid);
             device.setRemarks(remarks);
