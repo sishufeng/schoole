@@ -6,6 +6,7 @@ import com.leien.service.DeviceService;
 import com.leien.utils.APIUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,6 +40,7 @@ public class DeviceController {
      * 获取温控设备信息
      * @return
      */
+    @CrossOrigin
     @PostMapping("/getTemperatureControlData")
     public Map<String,Object> getTemperatureControlData(){
         Map<String,Object> map = new HashMap<>();
@@ -62,6 +64,7 @@ public class DeviceController {
      * 获取风机设备信息
      * @return
      */
+    @CrossOrigin
     @PostMapping("/getFanControlData")
     public Map<String,Object> getFanControlData(){
 
@@ -86,6 +89,7 @@ public class DeviceController {
      * 刷新设备列表
      * @return
      */
+    @CrossOrigin
     @PostMapping("/refreshDeviceList")
     public Map<String,Object> refreshDeviceList(){
         Map<String,Object> map = new HashMap<>();

@@ -1,6 +1,9 @@
 body{
     font-size: 18px;
 }
+.hero{
+    
+}
 #view h3{
     display: none;
 }
@@ -46,3 +49,50 @@ body{
 .zuodata ul li{
     padding: 10px 0;
 }
+/* 风机 */
+.feng{
+    height: 300px;
+}
+#feng h3{
+    display: none;
+}
+#feng{
+    height: 300px;
+}
+#fengZong{
+    height: 300px;
+    width: 100%;
+    border:1px solid #F1F3F4;
+    /* background: firebrick; */
+    /* display: flex; */
+}
+.fengtop{
+    height: 50px;
+    line-height: 50px;
+    padding-left: 60px;
+    border-bottom:1px solid #F1F3F4;
+}
+.fengzuo{
+    display: flex;
+    height: 250px;
+}
+.fengzuoimg{
+    width: 200px;
+    height: 200px;
+    line-height: 250px;
+    padding: 0 50px;
+}
+.fengzuoimg img{
+    width: 200px;
+    height: 200px;
+}
+.fengzuodata{
+    padding-top: 50px;
+    width:100%;
+}
+.fengzuodata ul li{
+    padding: 10px 0;
+}
+
+
+

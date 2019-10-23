@@ -140,7 +140,7 @@
                   // 刷新设备列表
                   layer.confirm('确定刷新设备列表吗', function(index){
                     $.ajax({
-                        url: "/user/deleteUser",
+                        url: "/device/refreshDeviceList",
                         dataType: 'json',
                         type: 'post',
                         async: false,
