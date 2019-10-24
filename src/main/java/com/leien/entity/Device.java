@@ -52,6 +52,6 @@ public class Device extends DeviceReturnData{
     /**
      * 设备类型(7：温控，8：风机)
      */
-    private Integer deviceTypes;
+    private Integer typeId;
 
 }

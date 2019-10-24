@@ -122,6 +122,7 @@ public class AppRunner implements ApplicationRunner {
             }else {
                 returnData1.setDeviceZhuangTaiName("离线");
                 returnData1.setUuid(device.getUuid());
+                returnData1.setTypeId(device.getTypeId());
                 pageList.add(returnData1);
                 deviceListMap.put("offLine",pageList);
             }
@@ -241,7 +242,7 @@ public class AppRunner implements ApplicationRunner {
             String uuid = object.getString("uuid");
             String remarks = object.getString("remarks");
             String deviceType = object.getString("type_id");
-            device.setDeviceTypes(Integer.valueOf(deviceType));
+            device.setTypeId(Integer.valueOf(deviceType));
             device.setTypeName(typeName);
             device.setDeviceName(name);
             //设备状态(0：离线，1：在线)

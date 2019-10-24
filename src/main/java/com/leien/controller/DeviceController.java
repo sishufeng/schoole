@@ -7,10 +7,7 @@ import com.leien.service.DeviceService;
 import com.leien.utils.APIUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +35,7 @@ public class DeviceController {
     AppRunner appRunner;
 
     /**
-     * 获取温控设备信息
+     * 获取温控在线设备信息
      * @return
      */
     @CrossOrigin
@@ -49,20 +46,10 @@ public class DeviceController {
         if(deviceData != null && !deviceData.isEmpty()){
             List temperatureControlList = deviceData.get("temperatureControl");
             // 在线
-            if(temperatureControlList != null && temperatureControlList.size() >0){
+//            if(temperatureControlList != null && temperatureControlList.size() >0){
                 map.put("data",temperatureControlList);
-            }
-            //获取离线温控设备信息
-            Map<String, List> temperatureControlMap = offLineDevices(deviceData);
-            if(temperatureControlMap != null && !temperatureControlMap.isEmpty()){
-                //离线的温控设备
-//                List temperatureControlDataOffLineList = temperatureControlMap.get("temperatureControlData");
-                temperatureControlList = temperatureControlMap.get("temperatureControlData");
-                //没有返回数据的离线的温控设备
-                List temperatureControlDataOffLine = temperatureControlMap.get("offLineTemperatureControlData");
-                map.put("offLineTemperatureControlData",temperatureControlList);
-                map.put("offLineTemperatureControlNotData",temperatureControlDataOffLine);
-            }
+//            }
+
         }else {
             //远程接口服务故障时获取本地数据返回页面展示
             Map<String, List> tMap = deviceData();
@@ -75,7 +62,30 @@ public class DeviceController {
     }
 
     /**
-     * 获取风机设备信息
+     * 获取温控离线设备
+     * @return
+     */
+    @GetMapping("/getOffLineTemperatureControlData")
+    public Map<String,Object> getOffLineTemperatureControlData(){
+        Map<String,Object> map = new HashMap<>();
+        Map<String, List> deviceData = appRunner.deviceData;
+        //获取离线温控设备信息
+        Map<String, List> temperatureControlMap = offLineDevices(deviceData);
+        if(temperatureControlMap != null && !temperatureControlMap.isEmpty()){
+            //离线的温控设备
+            List temperatureControlDataOffLineList = temperatureControlMap.get("temperatureControlData");
+            /*//没有返回数据的离线的温控设备
+            List temperatureControlDataOffLine = temperatureControlMap.get("offLineTemperatureControlData");
+            map.put("offLineTemperatureControlNotData",temperatureControlDataOffLine);*/
+            map.put("data",temperatureControlDataOffLineList);
+        }
+        map.put("code","0");
+        map.put("msg","");
+        return map;
+    }
+
+    /**
+     * 获取风机在线设备信息
      * @return
      */
     @CrossOrigin
@@ -87,25 +97,37 @@ public class DeviceController {
         if(deviceData != null && !deviceData.isEmpty()){
             List fanControlList = deviceData.get("fanControl");
             //在线
-            if(fanControlList != null && fanControlList.size() >0){
+//            if(fanControlList != null && fanControlList.size() >0){
                 map.put("data",fanControlList);
-            }
-            //获取离线风机设备信息
-            Map<String, List> fanControlMap = offLineDevices(deviceData);
-            if(fanControlMap != null && !fanControlMap.isEmpty()){
-                //有返回数据的风机设备
-//                List fanControlDataOffLineList = fanControlMap.get("fanControlData");
-                fanControlList = fanControlMap.get("fanControlData");
-                //没有返回数据的风机设备
-                List fanControlDataOffLine = fanControlMap.get("offLineFanControlData");
-                map.put("offLineFanControlData",fanControlList);
-                map.put("notReturnDataFan",fanControlDataOffLine);
-            }
+//            }
         }else {
             //远程接口服务故障时获取本地数据返回页面展示
             Map<String, List> tMap = deviceData();
             List fData = tMap.get("fData");
             map.put("data",fData);
+        }
+        map.put("code","0");
+        map.put("msg","");
+        return map;
+    }
+
+    /**
+     * 获取风机离线设备
+     * @return
+     */
+    @GetMapping("/getOffLineFanControlData")
+    public Map<String,Object> getOffLineFanControlData(){
+        Map<String,Object> map = new HashMap<>();
+        Map<String, List> deviceData = appRunner.deviceData;
+        //获取离线风机设备信息
+        Map<String, List> fanControlMap = offLineDevices(deviceData);
+        if(fanControlMap != null && !fanControlMap.isEmpty()){
+            //有返回数据的风机设备
+            List fanControlDataOffLineList = fanControlMap.get("fanControlData");
+            //没有返回数据的风机设备
+//            List fanControlDataOffLine = fanControlMap.get("offLineFanControlData");
+//            map.put("notReturnDataFan",fanControlDataOffLine);
+            map.put("data",fanControlDataOffLineList);
         }
         map.put("code","0");
         map.put("msg","");
@@ -167,7 +189,7 @@ public class DeviceController {
         List fanControlList = new ArrayList();
         for(Device device : list){
             // 8：风机， 7：温控
-            if(device.getDeviceTypes() == 8){
+            if(device.getTypeId() == 8){
                 //风机离线设备
                 fanControlList.add(device);
             }else {
