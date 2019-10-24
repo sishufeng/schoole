@@ -65,7 +65,8 @@ public class DeviceController {
      * 获取温控离线设备
      * @return
      */
-    @GetMapping("/getOffLineTemperatureControlData")
+    @CrossOrigin
+    @PostMapping("/getOffLineTemperatureControlData")
     public Map<String,Object> getOffLineTemperatureControlData(){
         Map<String,Object> map = new HashMap<>();
         Map<String, List> deviceData = appRunner.deviceData;
@@ -115,7 +116,8 @@ public class DeviceController {
      * 获取风机离线设备
      * @return
      */
-    @GetMapping("/getOffLineFanControlData")
+    @CrossOrigin
+    @PostMapping("/getOffLineFanControlData")
     public Map<String,Object> getOffLineFanControlData(){
         Map<String,Object> map = new HashMap<>();
         Map<String, List> deviceData = appRunner.deviceData;

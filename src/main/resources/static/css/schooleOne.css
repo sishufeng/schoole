@@ -7,10 +7,9 @@ body{
 #view h3{
     display: none;
 }
-#view{
-    
+/* #view{
     height: 300px;
-}
+} */
 #views{
     height: 300px;
     width: 100%;
@@ -50,14 +49,11 @@ body{
     padding: 10px 0;
 }
 /* 风机 */
-.feng{
+/* .feng{
     height: 300px;
-}
+} */
 #feng h3{
     display: none;
-}
-#feng{
-    height: 300px;
 }
 #fengZong{
     height: 300px;
@@ -93,6 +89,89 @@ body{
 .fengzuodata ul li{
     padding: 10px 0;
 }
-
-
-
+/* 温控器-----离线 */
+#lixian h3{
+    display: none;
+}
+/* #viewlixian{
+    height: 300px;
+} */
+#viewslixian{
+    height: 300px;
+    width: 100%;
+    border:1px solid #F1F3F4;
+    /* background: firebrick; */
+    /* display: flex; */
+}
+.zuotoplixian{
+    height: 50px;
+    line-height: 50px;
+    padding-left: 60px;
+    border-bottom:1px solid #F1F3F4;
+}
+/* 下 */
+.zuolixian{
+    display: flex;
+    height: 250px;
+}
+.zuoimglixian{
+    width: 200px;
+    height: 200px;
+    line-height: 250px;
+    padding: 0 50px;
+}
+.zuoimglixian img{
+    width: 200px;
+    height: 200px;
+}
+.zuodatalixian{
+    padding-top: 50px;
+    width:100%;
+}
+.zuodatalixian ul{
+    float:left;width:15%;
+}
+.zuodatalixian ul li{
+    padding: 10px 0;
+}
+/* 风机---离线 */
+/* .leave{
+    height: 300px;
+} */
+#leave h3{
+    display: none;
+}
+#fengZongleave{
+    height: 300px;
+    width: 100%;
+    border:1px solid #F1F3F4;
+    /* background: firebrick; */
+    /* display: flex; */
+}
+.fengtopleave{
+    height: 50px;
+    line-height: 50px;
+    padding-left: 60px;
+    border-bottom:1px solid #F1F3F4;
+}
+.fengzuoleave{
+    display: flex;
+    height: 250px;
+}
+.fengzuoimgleave{
+    width: 200px;
+    height: 200px;
+    line-height: 250px;
+    padding: 0 50px;
+}
+.fengzuoimgleave img{
+    width: 200px;
+    height: 200px;
+}
+.fengzuodataleave{
+    padding-top: 50px;
+    width:100%;
+}
+.fengzuodata ul li{
+    padding: 10px 0;
+}

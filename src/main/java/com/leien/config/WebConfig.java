@@ -58,6 +58,7 @@ public class WebConfig implements WebMvcConfigurer {
                         ("/login","/device/getDeviceData","/user/login","/user/queryList",
                             "/device/getFanControlData","/device/getTemperatureControlData",
                                 "/device/refreshDeviceList","/device/refreshDeviceList",
+                                "/device/getOffLineTemperatureControlData","/device/getOffLineFanControlData",
                                 "/static/**"));
     }
 

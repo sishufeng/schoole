@@ -12,9 +12,15 @@
 </head>
 <body>
 <section class="hero">
+
 	<div id="view">
 	</div>
+	<div id="lixian">
+
+	</div>
 	<div id="feng">
+	</div>
+	<div id="leave">
 	</div>
 </section>
 <script src="../static/layui/layui.js"></script>
@@ -29,7 +35,9 @@
 		var laytpl = layui.laytpl;	
 		repeat();
 		repeatfeng();
-		var t1 = window.setInterval(function(){repeat();repeatfeng();},3000);
+		repeatlixian();
+		repeatfengleave();
+		// var t1 = window.setInterval(function(){repeat();repeatfeng();},3000);
 		}); 
 	// 设置定时器
 	function repeat(){
@@ -38,7 +46,8 @@
 			layui.use('laytpl', function(){
 			var laytpl = layui.laytpl;
 			console.log(res.data);
-			var data = { //数据
+			if(res.data!=null){
+				var data = { //数据
 			"title":"温控器"
 			,"list":res.data
 			}
@@ -47,6 +56,26 @@
 			laytpl(getTpl).render(data, function(html){
 			view.innerHTML = html;
 			});
+			}
+			}); 
+	        })
+	}
+	function repeatlixian(){
+		$.post('/device/getOffLineTemperatureControlData',function (res) {
+		// 开始解析
+			layui.use('laytpl', function(){
+			var laytpl = layui.laytpl;
+			console.log(res.data);
+			if(res.data!=null){
+				var data = { //数据
+			"title":"温控器"
+			,"list":res.data}
+			var getTpl = wenkonglixian.innerHTML
+			,lixian = document.getElementById('lixian');
+			laytpl(getTpl).render(data, function(html){
+			lixian.innerHTML = html;
+			});
+			}
 			}); 
 	        })
 	}
@@ -59,37 +88,58 @@
 			layui.use('laytpl', function(){
 			var laytpl = layui.laytpl;
 			console.log(res.data);
+			if(res.data!=null){
 			var data = { //数据
 			"title":"温控器"
-			,"list":res.data
-			}
+			,"list":res.data}
 			var getTpl = fengji.innerHTML
 			,feng = document.getElementById('feng');
 			laytpl(getTpl).render(data, function(html){
 			feng.innerHTML = html;
 			});
+			}
+			}); 
+	        })
+	}
+	function repeatfengleave(){
+		$.post('/device/getOffLineFanControlData',function (res) {
+		// 开始解析
+			layui.use('laytpl', function(){
+			var laytpl = layui.laytpl;
+			console.log(res.data);
+			if(res.data!=null){
+			var data = { //数据
+			"title":"温控器"
+			,"list":res.data
+			}
+			var getTpl = fengjileave.innerHTML
+			,leave = document.getElementById('leave');
+			laytpl(getTpl).render(data, function(html){
+			leave.innerHTML = html;
+			});
+			}
 			}); 
 	        })
 	}
 </script>
-<!-- //温控器模板 -->
+<!-- //温控器模板  在线-->
 <script id="wenkong" type="text/html">
 	<h3>{{ d.title }}</h3>
 <ul>
 {{#  layui.each(d.list, function(index, item){ }}
 	<div id="views">
-		<div class="zuotop">{{ item.name }}</div>
+		<div class="zuotop">{{ item.deviceName }}</div>
 		<div class="zuo">
 			<div class="zuoimg"><img src="../static/img/wenkongqi.png" alt=""></div>
 			<div class="zuodata">
 				<ul>
-					<li>阀门状态:{{ item.valveStatus }}</li>
+					<li>阀门状态:{{ item.valveStatusName }}</li>
 					<li>冷水温度:{{ item.inletTemperature }}℃</li>
 					<li>内管温度:{{ item.reWaterTemperature }}℃</li>
 				</ul>
 				<ul>
 					
-					<li>设备状态:{{ item.zhuangtaiName }}</li>
+					<li>设备状态:{{ item.deviceZhuangTaiName }}</li>
 					<li>外管温度:{{ item.beiYiTemperature }}℃</li>
 					<li>集热温度:{{ item.beiErTemperature }}℃</li>
 				</ul>
@@ -103,18 +153,72 @@
 {{#  } }} 
 </ul>
 </script>
-<!-- //风机模板 -->
+<!-- //温控器模板  离线-->
+<script id="wenkonglixian" type="text/html">
+	<h3>{{ d.title }}</h3>
+<ul>
+{{#  layui.each(d.list, function(index, item){ }}
+	<div id="viewslixian">
+		<div class="zuotoplixian">{{ item.deviceName }}</div>
+		<div class="zuolixian">
+			<div class="zuoimglixian"><img src="../static/img/wenkongqi.png" alt=""></div>
+			<div class="zuodatalixian">
+					<ul>
+						<li>阀门状态:{{ item.valveStatusName }}</li>
+						<li>冷水温度:{{ item.inletTemperature }}℃</li>
+						<li>内管温度:{{ item.reWaterTemperature }}℃</li>
+					</ul>
+					<ul>
+						
+						<li>设备状态:{{ item.deviceZhuangTaiName }}</li>
+						<li>外管温度:{{ item.beiYiTemperature }}℃</li>
+						<li>集热温度:{{ item.beiErTemperature }}℃</li>
+					</ul>
+			</div>
+		</div>
+	</div>
+{{#  }); }}
+ 
+{{#  if(d.list.length === 0){ }}
+  无数据
+{{#  } }} 
+</ul>
+</script>
+<!-- //风机模板   在线-->
 <script id="fengji" type="text/html">
 	<h3>{{ d.title }}</h3>
 <ul>
 {{#  layui.each(d.list, function(index, item){ }}
 	<div id="fengZong">
-		<div class="fengtop">{{ item.name }}</div>
+		<div class="fengtop">{{ item.deviceName }}</div>
 		<div class="fengzuo">
 			<div class="fengzuoimg"><img src="../static/img/fengji.png" alt=""></div>
 			<div class="fengzuodata">
 				<ul>
-					<li>设备状态:{{ item.zhuangtaiName }}</li>
+					<li>设备状态:{{ item.deviceZhuangTaiName }}</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+{{#  }); }}
+ 
+{{#  if(d.list.length === 0){ }}
+  无数据
+{{#  } }} 
+</ul>
+</script>
+<!-- //风机模板   离线-->
+<script id="fengjileave" type="text/html">
+	<h3>{{ d.title }}</h3>
+<ul>
+{{#  layui.each(d.list, function(index, item){ }}
+	<div id="fengZongleave">
+		<div class="fengtopleave">{{ item.deviceName }}</div>
+		<div class="fengzuoleave">
+			<div class="fengzuoimgleave"><img src="../static/img/fengji.png" alt=""></div>
+			<div class="fengzuodataleave">
+				<ul>
+					<li>设备状态:{{ item.deviceZhuangTaiName }}</li>
 				</ul>
 			</div>
 		</div>
