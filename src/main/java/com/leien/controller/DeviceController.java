@@ -56,10 +56,11 @@ public class DeviceController {
             Map<String, List> temperatureControlMap = offLineDevices(deviceData);
             if(temperatureControlMap != null && !temperatureControlMap.isEmpty()){
                 //离线的温控设备
-                List temperatureControlDataOffLineList = temperatureControlMap.get("temperatureControlData");
+//                List temperatureControlDataOffLineList = temperatureControlMap.get("temperatureControlData");
+                temperatureControlList = temperatureControlMap.get("temperatureControlData");
                 //没有返回数据的离线的温控设备
                 List temperatureControlDataOffLine = temperatureControlMap.get("offLineTemperatureControlData");
-                map.put("offLineTemperatureControlData",temperatureControlDataOffLineList);
+                map.put("offLineTemperatureControlData",temperatureControlList);
                 map.put("offLineTemperatureControlNotData",temperatureControlDataOffLine);
             }
         }else {
@@ -93,10 +94,11 @@ public class DeviceController {
             Map<String, List> fanControlMap = offLineDevices(deviceData);
             if(fanControlMap != null && !fanControlMap.isEmpty()){
                 //有返回数据的风机设备
-                List fanControlDataOffLineList = fanControlMap.get("fanControlData");
+//                List fanControlDataOffLineList = fanControlMap.get("fanControlData");
+                fanControlList = fanControlMap.get("fanControlData");
                 //没有返回数据的风机设备
                 List fanControlDataOffLine = fanControlMap.get("offLineFanControlData");
-                map.put("offLineFanControlData",fanControlDataOffLineList);
+                map.put("offLineFanControlData",fanControlList);
                 map.put("notReturnDataFan",fanControlDataOffLine);
             }
         }else {
