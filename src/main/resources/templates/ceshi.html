@@ -231,8 +231,10 @@
                    console.log(data.roleName);
                    if(data.roleName=="管理员"){
                     roleId=1;
-                   }else{
+                   }else if(data.roleName=="德州高铁中学"){
                     roleId=2;
+                   }else{
+                    roleId=3;
                    }
                   }
               });

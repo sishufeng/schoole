@@ -41,7 +41,7 @@
 		}); 
 	// 设置定时器
 	function repeat(){
-		$.post('/device/getFanControlData',function (res) {
+		$.post('/device/getTemperatureControlData',function (res) {
 		// 开始解析
 			layui.use('laytpl', function(){
 			var laytpl = layui.laytpl;
@@ -128,7 +128,7 @@
 <ul>
 {{#  layui.each(d.list, function(index, item){ }}
 	<div id="views">
-		<div class="zuotop">{{ item.deviceName }}</div>
+		<div class="zuotop">{{ item.deviceTypeName }}</div>
 		<div class="zuo">
 			<div class="zuoimg"><img src="../static/img/wenkongqi.png" alt=""></div>
 			<div class="zuodata">
@@ -159,7 +159,7 @@
 <ul>
 {{#  layui.each(d.list, function(index, item){ }}
 	<div id="viewslixian">
-		<div class="zuotoplixian">{{ item.deviceName }}</div>
+		<div class="zuotoplixian">{{ item.deviceTypeName }}</div>
 		<div class="zuolixian">
 			<div class="zuoimglixian"><img src="../static/img/wenkongqi.png" alt=""></div>
 			<div class="zuodatalixian">
@@ -190,12 +190,12 @@
 <ul>
 {{#  layui.each(d.list, function(index, item){ }}
 	<div id="fengZong">
-		<div class="fengtop">{{ item.deviceName }}</div>
+		<div class="fengtop">{{ item.deviceTypeName }}</div>
 		<div class="fengzuo">
 			<div class="fengzuoimg"><img src="../static/img/fengji.png" alt=""></div>
 			<div class="fengzuodata">
 				<ul>
-					<li>设备状态:{{ item.deviceZhuangTaiName }}</li>
+					<li>设备状态:{{ item.fanStatusName }}</li>
 				</ul>
 			</div>
 		</div>
@@ -213,12 +213,12 @@
 <ul>
 {{#  layui.each(d.list, function(index, item){ }}
 	<div id="fengZongleave">
-		<div class="fengtopleave">{{ item.deviceName }}</div>
+		<div class="fengtopleave">{{ item.deviceTypeName }}</div>
 		<div class="fengzuoleave">
 			<div class="fengzuoimgleave"><img src="../static/img/fengji.png" alt=""></div>
 			<div class="fengzuodataleave">
 				<ul>
-					<li>设备状态:{{ item.deviceZhuangTaiName }}</li>
+					<li>设备状态:{{ item.fanStatusName }}</li>
 				</ul>
 			</div>
 		</div>
