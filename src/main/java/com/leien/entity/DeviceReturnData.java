@@ -74,5 +74,11 @@ public class DeviceReturnData {
      * 风机状态(1：开，0：关)
      */
     private String fanStatusName;
+    /**
+     * 风机状态(1：开，0：关)
+     */
+    private String deviceZhuangTaiName;
+
+    private String projectName;
 
 }

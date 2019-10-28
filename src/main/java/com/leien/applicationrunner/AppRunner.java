@@ -107,6 +107,8 @@ public class AppRunner implements ApplicationRunner {
         for(Device device : list){
             returnData1 = new Device();
             returnData1.setName(device.getName());
+            returnData1.setProjectName(device.getProjectName());
+            returnData1.setProjectUuid(device.getProjectUuid());
             //设备状态(0：离线，1：在线)
             int deviceSta = device.getZhaungtai();
             returnData1.setZhaungtai(deviceSta);
@@ -133,11 +135,11 @@ public class AppRunner implements ApplicationRunner {
     /**
      * 设备在线，处理方法
      */
-    public Map<String,List> onLineDevice(DeviceReturnData returnData1){
+    public Map<String,List> onLineDevice(Device returnData1){
         List deviceList = new ArrayList();
         List fanList = new ArrayList();
         Map<String,List> map = new HashMap<>();
-        DeviceReturnData deviceReturnData;
+        DeviceReturnData deviceReturnData = new DeviceReturnData();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String returnData = apiUtil.getData(token);
             JSONObject jsonObject = JSON.parseObject(returnData);
@@ -146,55 +148,57 @@ public class AppRunner implements ApplicationRunner {
             // 如果deviceData.size()>0时所有设备都在线,解析设备信息
             if(deviceData.size()>0){
                 for (JsonRootBean jsonBeen : deviceData){
-                    returnData1 = new DeviceReturnData();
+                    deviceReturnData.setName(returnData1.getName());
+                    deviceReturnData.setProjectName(returnData1.getProjectName());
+                    deviceReturnData.setDeviceZhuangTaiName(returnData1.getDeviceZhuangTaiName());
                     String msg = jsonBeen.getMsg();
                     String clientUuid = jsonBeen.getClientUuid();
                     String[] s = HexUtils.subStringData(msg);
-                    returnData1.setId(UUIDUtils.getUuid());
-                    returnData1.setDeviceUuid(clientUuid);
+                    deviceReturnData.setId(UUIDUtils.getUuid());
+                    deviceReturnData.setDeviceUuid(clientUuid);
                     //设备工作类型  0=温控器，1=风机
                     int deviceStatus = Integer.parseInt(s[3] + s[4],16);
                     // 温控解析
                     if(deviceStatus == 0){
-                        returnData1.setDeviceTypeName("温控器");
-                        returnData1.setDeviceType(deviceStatus);
+                        deviceReturnData.setDeviceTypeName("温控器");
+                        deviceReturnData.setDeviceType(deviceStatus);
                         // 设备阀门状态(0：关，1：开)
                         int valveSta = Integer.parseInt(s[15] + s[16],16);
                         if(valveSta == 1){
-                            returnData1.setValveStatus(valveSta);
-                            returnData1.setValveStatusName("开");
+                            deviceReturnData.setValveStatus(valveSta);
+                            deviceReturnData.setValveStatusName("开");
                         }else {
-                            returnData1.setValveStatus(valveSta);
-                            returnData1.setValveStatusName("关");
+                            deviceReturnData.setValveStatus(valveSta);
+                            deviceReturnData.setValveStatusName("关");
                         }
                         //冷水温度
-                        returnData1.setInletTemperature(Long.parseLong(s[17] + s[18],16));
+                        deviceReturnData.setInletTemperature(Long.parseLong(s[17] + s[18],16));
                         // 内管温度
-                        returnData1.setReWaterTemperature(Long.parseLong(s[19] + s[20],16));
+                        deviceReturnData.setReWaterTemperature(Long.parseLong(s[19] + s[20],16));
                         // 外管温度
-                        returnData1.setBeiYiTemperature(Long.parseLong(s[21] + s[22],16));
+                        deviceReturnData.setBeiYiTemperature(Long.parseLong(s[21] + s[22],16));
                         // 集热温度
-                        returnData1.setBeiErTemperature(Long.parseLong(s[23] + s[24],16));
-                        returnData1.setAddTime(format.format(jsonBeen.getAddTime()));
-                        deviceList.add(returnData1);
+                        deviceReturnData.setBeiErTemperature(Long.parseLong(s[23] + s[24],16));
+                        deviceReturnData.setAddTime(format.format(jsonBeen.getAddTime()));
+                        deviceList.add(deviceReturnData);
                         map.put("device",deviceList);
                     }else {
                         //风机解析
-                        returnData1.setDeviceTypeName("风机");
-                        returnData1.setDeviceType(deviceStatus);
+                        deviceReturnData.setDeviceTypeName("风机");
+                        deviceReturnData.setDeviceType(deviceStatus);
                         //设备工作类型  0=温控器，1=风机
                         int deviceSta = Integer.parseInt(s[3] + s[4],16);
                         // 风机状态(1：开，0：关)
                         int fanStatus = Integer.parseInt(s[15] + s[16],16);
                         if(fanStatus == 1){
-                            returnData1.setFanStatus(fanStatus);
-                            returnData1.setFanStatusName("开");
+                            deviceReturnData.setFanStatus(fanStatus);
+                            deviceReturnData.setFanStatusName("开");
                         }else {
-                            returnData1.setFanStatus(fanStatus);
-                            returnData1.setFanStatusName("关");
+                            deviceReturnData.setFanStatus(fanStatus);
+                            deviceReturnData.setFanStatusName("关");
                         }
-                        returnData1.setAddTime(format.format(jsonBeen.getAddTime()));
-                        fanList.add(returnData1);
+                        deviceReturnData.setAddTime(format.format(jsonBeen.getAddTime()));
+                        fanList.add(deviceReturnData);
                         map.put("fan",fanList);
                     }
                     String isRead = s[1];
@@ -202,7 +206,7 @@ public class AppRunner implements ApplicationRunner {
                     DeviceReturnData deviceReData = deviceReService.queryDeviceDataByAddTime(format.format(jsonBeen.getAddTime()),clientUuid);
                     // 返回数据第三位代表操作类型，03：读取，06：操作。并且时间不同再往数据库保存
                     if (isRead.equals("03") && deviceReData == null){
-                        deviceReService.insertDeviceReData(returnData1);
+                        deviceReService.insertDeviceReData(deviceReturnData);
                     }
                 }
             }
