@@ -28,7 +28,6 @@ public class UserController {
      * 分页查询所有用户
      * @return
      */
-    @CrossOrigin
     @GetMapping("/queryList")
     public Map<String,Object> queryList(User user) {//ResponseEntity
         Map<String,Object> map = new HashMap<>();
@@ -44,7 +43,6 @@ public class UserController {
      * 查看用户详情
      * @return
      */
-    @CrossOrigin
     @GetMapping("/details")
     public User queryUserDetails(Integer userId) {
         User user = userService.queryUserById(userId);
@@ -54,7 +52,6 @@ public class UserController {
     /**
      * 跳转到登陆页
      */
-    @CrossOrigin
     @PostMapping("/login")
     public Map<String,Object> login(String phone, String password, HttpSession session) {
         Map<String,Object> map = new HashMap<>();
@@ -72,7 +69,6 @@ public class UserController {
      * 修改用户登录密码
      * @return
      */
-    @CrossOrigin
     @PostMapping("/updatePwd")
     public Map<String,Object> editUserLoginPwd(String userPwd,HttpSession session){
         User user = (User) session.getAttribute("user");
@@ -85,7 +81,6 @@ public class UserController {
      * @param user
      * @return
      */
-    @CrossOrigin
     @PostMapping("/add")
     public Map<String,Object> saveUser(User user, String userName,String phone){
         //新用户密码默认为 123456
@@ -98,7 +93,6 @@ public class UserController {
      * @param user
      * @return
      */
-    @CrossOrigin
     @PostMapping("/saveEditUser")
     public Map<String,Object> updateUserDetails(User user){
         Map<String, Object> map = userService.updateUserDetailsByUserId(user);
@@ -110,7 +104,6 @@ public class UserController {
      * @param userId
      * @return
      */
-    @CrossOrigin
     @PostMapping("/deleteUser")
     public Map<String,Object> deleteUserByUSerId(String userId){
         List userIdList = new ArrayList();
@@ -126,7 +119,6 @@ public class UserController {
      * @param session
      * @return
      */
-    @CrossOrigin
     @PostMapping("/exit")
     public Map<String, Object> exit(HttpSession session){
         session.removeAttribute("user");

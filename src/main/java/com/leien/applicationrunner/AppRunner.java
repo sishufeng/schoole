@@ -89,7 +89,6 @@ public class AppRunner implements ApplicationRunner {
                 String devices = apiUtil.getDeviceInformation(token);
                 List<Device> deviceReDataList = JSON.parseArray(devices, Device.class);
                 deviceData = getDeviceData(deviceReDataList);
-                logger.info("执行定时任务");
             }
         }, 1000, 10000, TimeUnit.MILLISECONDS);
     }
@@ -106,6 +105,8 @@ public class AppRunner implements ApplicationRunner {
         Device returnData1;
         for(Device device : list){
             returnData1 = new Device();
+            String schooluuid = device.getProjectUuid();
+
             returnData1.setName(device.getName());
             returnData1.setProjectName(device.getProjectName());
             returnData1.setProjectUuid(device.getProjectUuid());

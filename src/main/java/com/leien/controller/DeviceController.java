@@ -38,7 +38,6 @@ public class DeviceController {
      * 获取温控在线设备信息
      * @return
      */
-    @CrossOrigin
     @PostMapping("/getTemperatureControlData")
     public Map<String,Object> getTemperatureControlData(){
         Map<String,Object> map = new HashMap<>();
@@ -65,7 +64,6 @@ public class DeviceController {
      * 获取温控离线设备
      * @return
      */
-    @CrossOrigin
     @PostMapping("/getOffLineTemperatureControlData")
     public Map<String,Object> getOffLineTemperatureControlData(){
         Map<String,Object> map = new HashMap<>();
@@ -78,7 +76,7 @@ public class DeviceController {
             //没有返回数据的离线的温控设备
             List temperatureControlDataOffLine = temperatureControlMap.get("offLineTemperatureControlData");
             map.put("offLineTemperatureControlNotData",temperatureControlDataOffLine);
-            map.put("data",temperatureControlDataOffLineList);
+            map.put("data",temperatureControlDataOffLine);
         }
         map.put("code","0");
         map.put("msg","");
@@ -89,7 +87,6 @@ public class DeviceController {
      * 获取风机在线设备信息
      * @return
      */
-    @CrossOrigin
     @PostMapping("/getFanControlData")
     public Map<String,Object> getFanControlData(){
         Map<String,Object> map = new HashMap<>();
@@ -116,7 +113,6 @@ public class DeviceController {
      * 获取风机离线设备
      * @return
      */
-    @CrossOrigin
     @PostMapping("/getOffLineFanControlData")
     public Map<String,Object> getOffLineFanControlData(){
         Map<String,Object> map = new HashMap<>();
@@ -129,7 +125,7 @@ public class DeviceController {
             //没有返回数据的风机设备
             List fanControlDataOffLine = fanControlMap.get("offLineFanControlData");
             map.put("notReturnDataFan",fanControlDataOffLine);
-            map.put("data",fanControlDataOffLineList);
+            map.put("data",fanControlDataOffLine);
         }
         map.put("code","0");
         map.put("msg","");
@@ -140,7 +136,6 @@ public class DeviceController {
      * 刷新设备列表
      * @return
      */
-    @CrossOrigin
     @PostMapping("/refreshDeviceList")
     public Map<String,Object> refreshDeviceList(){
         Map<String,Object> map = new HashMap<>();
