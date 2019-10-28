@@ -1,6 +1,8 @@
 package com.leien.utils;
 
 import com.leien.config.ApiConfig;
+import com.leien.entity.School;
+import com.leien.service.SchoolService;
 import org.apache.http.*;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -30,6 +32,9 @@ public class APIUtil {
 
     private static ApiConfig api;
 
+    @Autowired
+    SchoolService schoolService;
+
     /**
      * 注入访问远程设备配置类
      * @param apiConfig
@@ -42,6 +47,19 @@ public class APIUtil {
     private Logger logger = LoggerFactory.getLogger(APIUtil.class);
 
 
+    /**
+     * 获取学校项目标识符
+     * @return
+     */
+    public String getSchoolKey(){
+        StringBuilder sb = new StringBuilder();
+        List<School> schoolProjectKey = schoolService.getSchoolProjectKey();
+        for(School school : schoolProjectKey){
+            sb.append(school.getSchoolProjectKey()).append(",");
+        }
+        sb.substring(0, sb.length()-1);
+        return sb.toString();
+    }
 
     /**
      * 获取设备列表
@@ -49,14 +67,14 @@ public class APIUtil {
      * @return
      */
     public String getDeviceInformation(String token){
-
+        String schoolKey = getSchoolKey();
         String str = "";
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
         String url =  api.getUrl() + api.getDeviceInformationPathName();
         //封装请求参数
         List<NameValuePair> params = new ArrayList();
-        params.add(new BasicNameValuePair("project_key", api.getTokenKey()));
+        params.add(new BasicNameValuePair("project_key", schoolKey));
         //如果Token为空就重新获取
         if (StringUtils.isEmpty(token)){
             token = getToken();
@@ -107,12 +125,13 @@ public class APIUtil {
      */
     public String getData(String token){
         String str = "";
+        String schoolKey = getSchoolKey();
         CloseableHttpClient httpClient = HttpClients.createDefault();
         CloseableHttpResponse response = null;
         String url =  api.getUrl() + api.getDataPathName();
         //封装请求参数
         List<NameValuePair> params = new ArrayList();
-        params.add(new BasicNameValuePair("project_key", api.getTokenKey()));
+        params.add(new BasicNameValuePair("project_key", schoolKey));
         //如果Token为空就重新获取
         if (StringUtils.isEmpty(token)){
             token = getToken();

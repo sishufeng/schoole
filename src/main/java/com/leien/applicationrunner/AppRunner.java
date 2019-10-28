@@ -253,6 +253,8 @@ public class AppRunner implements ApplicationRunner {
                 device.setZhaungtai(Integer.valueOf(zhaungtai));
                 device.setDeviceZhuangTaiName("在线");
             }
+            device.setProjectUuid(object.getString("project_uuid"));
+            device.setProjectName(object.getString("project_name"));
             device.setUuid(uuid);
             device.setRemarks(remarks);
             list.add(device);

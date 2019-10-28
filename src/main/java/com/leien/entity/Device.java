@@ -54,4 +54,10 @@ public class Device extends DeviceReturnData{
      */
     private Integer typeId;
 
+    /**
+     * 设备所属学校标识符
+     */
+    private String schoolProjectKey;
+    private String projectUuid;
+    private String projectName;
 }

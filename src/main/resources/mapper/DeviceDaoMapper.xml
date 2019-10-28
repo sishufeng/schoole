@@ -9,6 +9,8 @@
         <result column="device_zhuangtai_name" property="deviceZhuangTaiName" jdbcType="VARCHAR"/>
         <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
         <result column="type_id" property="typeId" jdbcType="INTEGER"/>
+        <result column="project_uuid" property="projectUuid" jdbcType="VARCHAR"/>
+        <result column="project_name" property="projectName" jdbcType="VARCHAR"/>
 
         <result column="device_type" property="deviceType" jdbcType="INTEGER"/>
         <result column="valve_status" property="valveStatus" jdbcType="INTEGER"/>
@@ -37,7 +39,7 @@
 
     <!-- 设备不在线时查询设备信息返回页面展示 -->
     <select id="queryDeviceByUuidDesc" resultMap="deviceMap" parameterType="String">
-        select d.device_name,d.type_name,d.device_zhuangtai_name,drd.device_type,drd.device_type_name,drd.inlet_temperature,
+        select d.device_name,d.type_name,d.device_zhuangtai_name,d.project_uuid,d.project_name,drd.device_type,drd.device_type_name,drd.inlet_temperature,
                drd.fan_status_name,drd.rewater_temperature,drd.beiyi_temperature,drd.beier_temperature,
                drd.valve_status_name,drd.add_time
         from device d
@@ -49,7 +51,7 @@
 
     <!-- 远程服务故障时查询设备信息返回页面展示, LIMIT 2 :根据设备类型自定义配置-->
     <select id="queryDevicesForServiceFailure" resultMap="deviceMap">
-        select d.device_name,d.type_name,d.device_zhuangtai_name,drd.device_type,drd.device_type_name,drd.inlet_temperature,
+        select d.device_name,d.type_name,d.device_zhuangtai_name,d.project_uuid,d.project_name,drd.device_type,drd.device_type_name,drd.inlet_temperature,
                drd.fan_status_name,drd.rewater_temperature,drd.beiyi_temperature,drd.beier_temperature,
                drd.valve_status_name,drd.add_time
         from device d
@@ -60,22 +62,22 @@
 
     <!-- 查询不在线设备，并且在返回数据表中没有数据 -->
     <select id="queryDevicesByUuids" parameterType="String" resultMap="deviceMap">
-        select device_name,type_name,remarks,device_zhuangtai_name,type_id from device where uuid=#{deviceUUID}
+        select device_name,type_name,remarks,device_zhuangtai_name,type_id,project_uuid,project_name from device where uuid=#{deviceUUID}
     </select>
 
     <!-- 单条插入 -->
     <insert id="insertDevice" parameterType="com.leien.entity.Device">
-        insert into device (uuid,device_name,remarks,type_name,zhaungtai)
-        values (#{uuid},#{deviceName},#{remarks},#{typeName},#{zhaungtai})
+        insert into device (uuid,device_name,remarks,type_name,zhaungtai,project_uuid,project_name)
+        values (#{uuid},#{deviceName},#{remarks},#{typeName},#{zhaungtai},#{projectUuid},#{projectName})
     </insert>
 
     <!-- 批量插入设备信息 -->
     <insert id="bulkInsertDevice">
-        insert into device (uuid,device_name,remarks,type_name,zhaungtai,device_zhuangtai_name,type_id)
+        insert into device (uuid,device_name,remarks,type_name,zhaungtai,device_zhuangtai_name,type_id,project_uuid,project_name)
         values
           <foreach collection="deviceList"  separator=","  item="device">
               (#{device.uuid},#{device.deviceName},#{device.remarks},#{device.typeName},#{device.zhaungtai},#{device.deviceZhuangTaiName},#{device.typeId}
-        )
+              ,#{device.projectUuid},#{device.projectName})
           </foreach>
     </insert>
 
