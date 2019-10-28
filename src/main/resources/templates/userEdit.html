@@ -35,11 +35,11 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label">权限选择</label>
                     <div class="layui-input-block" style="width:320px;">
-                      <select name="roleId" lay-filter="aihao" id="" onchange="roleIdChange">
+                      <select name="roleId" lay-filter="aihao" id="changeThree" onclick="changeThree" onchange="roleIdChange">
                         <option value=""></option>
-                        <option value="1">管理员</option>
-                        <option value="2">济南一中</option>
-                        <option value="3">济南二中</option>
+                        <option id="opOne" value="1">管理员</option>
+                        <option id="opTwo" value="2">德州高铁中学</option>
+                        <option id="opThree" value="3">德州崇德中学</option>
                       </select>
                     </div>
                   </div>
@@ -125,6 +125,7 @@
                 userName=$(" #siduserName ").val();
                 phone=$(" #sidphone ").val();
                 roleId=$("#roleId").val();
+
                 console.log(roleId);
                 //监听提交
                 form.on('submit(demo1)', function(data){
