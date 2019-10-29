@@ -140,15 +140,15 @@ public class AppRunner implements ApplicationRunner {
         List deviceList = new ArrayList();
         List fanList = new ArrayList();
         Map<String,List> map = new HashMap<>();
-        DeviceReturnData deviceReturnData = new DeviceReturnData();
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String returnData = apiUtil.getData(token);
-            JSONObject jsonObject = JSON.parseObject(returnData);
-            String deviceKey = jsonObject.getString("data");
-            List<JsonRootBean> deviceData = JSON.parseArray(deviceKey, JsonRootBean.class);
-            // 如果deviceData.size()>0时所有设备都在线,解析设备信息
-            if(deviceData.size()>0){
-                for (JsonRootBean jsonBeen : deviceData){
+        String returnData = apiUtil.getData(token);
+        JSONObject jsonObject = JSON.parseObject(returnData);
+        String deviceKey = jsonObject.getString("data");
+        List<JsonRootBean> deviceData = JSON.parseArray(deviceKey, JsonRootBean.class);
+        // 如果deviceData.size()>0时所有设备都在线,解析设备信息
+        if(deviceData.size()>0){
+            for (JsonRootBean jsonBeen : deviceData){
+                    DeviceReturnData deviceReturnData = new DeviceReturnData();
                     deviceReturnData.setName(returnData1.getName());
                     deviceReturnData.setProjectName(returnData1.getProjectName());
                     deviceReturnData.setDeviceZhuangTaiName(returnData1.getDeviceZhuangTaiName());

@@ -2,9 +2,9 @@
 #security.basic.enabled = false
 spring:
   datasource:
-    username: root
-    password: wjk123456
-    url: jdbc:mysql://127.0.0.1:3306/xuexiao?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
+    username: xuexiao
+    password: xuexiao
+    url: jdbc:mysql://39.105.45.15:3306/xuexiao?useUnicode=true&characterEncoding=utf8&serverTimezone=Asia/Shanghai
 
   thymeleaf:
     enabled: true
