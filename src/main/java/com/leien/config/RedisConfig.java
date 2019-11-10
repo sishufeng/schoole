@@ -1,4 +1,4 @@
-package org.mall.config;
+package com.leien.config;
 
 import java.lang.reflect.Method;
 import java.time.Duration;
